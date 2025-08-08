@@ -146,3 +146,4 @@ D:\MyPortfolioPro\backend\API\obj\Debug\net9.0\refint\API.dll
 D:\MyPortfolioPro\backend\API\obj\Debug\net9.0\API.pdb
 D:\MyPortfolioPro\backend\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 D:\MyPortfolioPro\backend\API\obj\Debug\net9.0\ref\API.dll
+D:\MyPortfolioPro\backend\API\obj\Debug\net9.0\API.sourcelink.json
