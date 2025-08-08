@@ -1,8 +1,10 @@
-using Application.Interfaces;
 using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure;
+using Application.Interfaces.Services;
+using Application.Common.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddInfrastructure();
 
 // CORS
 builder.Services.AddCors(options =>
@@ -29,6 +32,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Dependency Injection
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

@@ -1,36 +1,62 @@
 using Application.DTOs;
-using Application.Interfaces;
+using Application.Interfaces.Services;
+using AutoMapper;
+using Domain.Entities;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services;
-
-public class ProjectService : IProjectService
+namespace Infrastructure.Services
 {
-    private static List<ProjectDto> _projects = new()
+    public class ProjectService : IProjectService
     {
-        new ProjectDto { Id = 1, Title = "Kariyer Portfolyo", Description = "Kişisel web sitesi", GithubUrl = "https://github.com/salih/portfolio" },
-        new ProjectDto { Id = 2, Title = "Otomat Projesi", Description = "Stok ve ürün takibi", GithubUrl = "https://github.com/salih/otomat" }
-    };
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-    public List<ProjectDto> GetAll()
-    {
-        return _projects;
-    }
+        public ProjectService(ApplicationDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
 
-    public ProjectDto GetById(int id)
-    {
-        return _projects.FirstOrDefault(p => p.Id == id)!;
-    }
+        public async Task<List<ProjectDto>> GetAllAsync()
+        {
+            var projects = await _context.Projects.ToListAsync();
+            return _mapper.Map<List<ProjectDto>>(projects);
+        }
 
-    public void Create(ProjectDto project)
-    {
-        project.Id = _projects.Max(p => p.Id) + 1;
-        _projects.Add(project);
-    }
+        public async Task<ProjectDto?> GetByIdAsync(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+            return project == null ? null : _mapper.Map<ProjectDto>(project);
+        }
 
-    public void Delete(int id)
-    {
-        var project = _projects.FirstOrDefault(p => p.Id == id);
-        if (project is not null)
-            _projects.Remove(project);
+        public async Task<ProjectDto> CreateAsync(CreateProjectDto dto)
+        {
+            var project = _mapper.Map<Project>(dto);
+            project.CreatedAt = DateTime.UtcNow;
+            _context.Projects.Add(project);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ProjectDto>(project);
+        }
+
+        public async Task<bool> UpdateAsync(UpdateProjectDto dto)
+        {
+            var project = await _context.Projects.FindAsync(dto.Id);
+            if (project == null) return false;
+
+            _mapper.Map(dto, project);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null) return false;
+
+            _context.Projects.Remove(project);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
