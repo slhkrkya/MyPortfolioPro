@@ -1,0 +1,17 @@
+<div class="max-w-xl mx-auto mt-10 p-6 border rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Yeni Proje Ekle</h2>
+
+  <form (ngSubmit)="saveProject()" class="flex flex-col gap-4">
+    <input type="text" [(ngModel)]="project.title" name="title" placeholder="Proje Başlığı" class="p-2 border rounded" required>
+    
+    <textarea [(ngModel)]="project.description" name="description" placeholder="Açıklama" class="p-2 border rounded" required></textarea>
+
+    <input type="url" [(ngModel)]="project.githubUrl" name="githubUrl" placeholder="GitHub URL" class="p-2 border rounded">
+    
+    <input type="text" [(ngModel)]="project.imageUrl" name="imageUrl" placeholder="Görsel URL" class="p-2 border rounded">
+
+    <button type="submit" class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+      Kaydet
+    </button>
+  </form>
+</div>

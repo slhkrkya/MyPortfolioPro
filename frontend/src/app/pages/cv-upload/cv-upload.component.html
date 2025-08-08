@@ -1,0 +1,29 @@
+<div class="max-w-lg mx-auto mt-10 p-6 border rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Belge Yükle</h2>
+
+  <form (ngSubmit)="uploadFile()" class="flex flex-col gap-4">
+    <input
+      type="text"
+      [(ngModel)]="fileName"
+      name="fileName"
+      placeholder="Belge Adı (örnek: CV, Sertifika)"
+      class="p-2 border rounded"
+      required
+    />
+
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      accept=".pdf,.doc,.docx"
+      class="p-2 border rounded bg-white"
+      required
+    />
+
+    <button
+      type="submit"
+      class="bg-green-600 text-white py-2 rounded hover:bg-green-700"
+    >
+      Yükle
+    </button>
+  </form>
+</div>

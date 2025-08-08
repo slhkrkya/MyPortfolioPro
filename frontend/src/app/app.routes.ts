@@ -1,11 +1,21 @@
 import { Routes } from '@angular/router';
-import { ProjectListComponent } from './pages/project-list/project-list';
-import { ProjectFormComponent } from './pages/project-form/project-form';
-import { CvUploadComponent } from './pages/cv-upload/cv-upload';
+import { ProjectListComponent } from './pages/project-list/project-list.component';
+import { ProjectFormComponent } from './pages/project-form/project-form.component';
+import { CvUploadComponent } from './pages/cv-upload/cv-upload.component';
+import { DocumentListComponent} from './pages/document-list/document-list.component';
 
 export const routes: Routes = [
-  { path: 'projects', component: ProjectListComponent },
-  { path: 'add-project', component: ProjectFormComponent },
-  { path: 'upload-cv', component: CvUploadComponent},
-  { path: '', redirectTo: 'projects', pathMatch: 'full' }
+  {
+    path: '',
+    component: ProjectListComponent,
+  },
+  {
+    path: 'admin/project-form',
+    component: ProjectFormComponent,
+  },
+  {
+    path: 'admin/cv-upload',
+    component: CvUploadComponent,
+  },
+  { path: 'documents', component: DocumentListComponent },
 ];

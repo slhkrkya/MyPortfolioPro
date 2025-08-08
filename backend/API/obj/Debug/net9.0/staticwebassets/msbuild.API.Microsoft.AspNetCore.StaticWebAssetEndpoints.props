@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/API/uploads/Salih_Karakaya_CV.pdf">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\Salih_Karakaya_CV.pdf'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-M3IQIZtdrf3\u002BXI8iKDTyND8Rg4u1OSAT6a0crik8vmU="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"712453"},{"Name":"Content-Type","Value":"application/pdf"},{"Name":"ETag","Value":"\u0022M3IQIZtdrf3\u002BXI8iKDTyND8Rg4u1OSAT6a0crik8vmU=\u0022"},{"Name":"Last-Modified","Value":"Fri, 08 Aug 2025 18:32:21 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/API/uploads/Salih_Karakaya_CV.tc04bele26.pdf">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\Salih_Karakaya_CV.pdf'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"tc04bele26"},{"Name":"integrity","Value":"sha256-M3IQIZtdrf3\u002BXI8iKDTyND8Rg4u1OSAT6a0crik8vmU="},{"Name":"label","Value":"_content/API/uploads/Salih_Karakaya_CV.pdf"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"712453"},{"Name":"Content-Type","Value":"application/pdf"},{"Name":"ETag","Value":"\u0022M3IQIZtdrf3\u002BXI8iKDTyND8Rg4u1OSAT6a0crik8vmU=\u0022"},{"Name":"Last-Modified","Value":"Fri, 08 Aug 2025 18:32:21 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
