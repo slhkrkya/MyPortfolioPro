@@ -12,5 +12,6 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Project> Projects { get; set; }
     public DbSet<Document> Documents { get; set; }
+
     // Diğer DbSet'leri buraya ekle
 }

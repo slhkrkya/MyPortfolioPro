@@ -19,7 +19,7 @@ export class AdminLoginComponent {
   error = '';
 
   submit() {
-    // ⬇️ İMZA: username, password ayrı ayrı
+    // İMZA: username, password ayrı ayrı
     this.auth.login(this.username, this.password).subscribe({
       next: ({ token }) => {
         this.auth.setToken(token);

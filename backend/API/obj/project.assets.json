@@ -4304,6 +4304,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 9.0.8",
       "Microsoft.Extensions.Configuration.Json >= 9.0.8",
       "Microsoft.Extensions.Http >= 9.0.8",
+      "Microsoft.Extensions.Options >= 9.0.8",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4",
       "Swashbuckle.AspNetCore >= 9.0.3"
     ]
@@ -4395,6 +4396,10 @@
             "version": "[9.0.8, )"
           },
           "Microsoft.Extensions.Http": {
+            "target": "Package",
+            "version": "[9.0.8, )"
+          },
+          "Microsoft.Extensions.Options": {
             "target": "Package",
             "version": "[9.0.8, )"
           },

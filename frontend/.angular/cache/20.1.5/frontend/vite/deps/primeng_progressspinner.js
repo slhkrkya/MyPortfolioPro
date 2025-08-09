@@ -1,13 +1,13 @@
 import {
   BaseComponent,
   BaseStyle
-} from "./chunk-VB4SLG7M.js";
+} from "./chunk-3OMFY5TL.js";
 import {
   SharedModule
-} from "./chunk-4SMVEPLY.js";
+} from "./chunk-KWMWK66K.js";
 import {
   CommonModule
-} from "./chunk-XVTBGKMG.js";
+} from "./chunk-GX5LI4WN.js";
 import "./chunk-DBQVMHQU.js";
 import {
   ChangeDetectionStrategy,
@@ -33,7 +33,8 @@ import {
   ɵɵgetInheritedFactory,
   ɵɵnamespaceSVG,
   ɵɵstyleProp
-} from "./chunk-62RN5YAJ.js";
+} from "./chunk-3BFC3KA7.js";
+import "./chunk-WPXXXN57.js";
 import "./chunk-GOMI4DH3.js";
 
 // node_modules/@primeuix/styles/dist/progressspinner/index.mjs

@@ -7,12 +7,14 @@ import { CvUploadComponent } from './pages/cv-upload/cv-upload.component';
 import { AdminPanelComponent } from 'src/app/pages/admin-panel/admin-panel.component';
 import { adminGuard } from './shared/guards/admin.guard';
 import { DocumentPreviewComponent } from './pages/document-preview/document-preview.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 export const routes: Routes = [
   // Public
   { path: 'projects', component: ProjectListComponent },
   { path: 'documents', component: DocumentListComponent },
   { path: 'documents/:id', component: DocumentPreviewComponent },
+  { path: 'contact', component: ContactComponent },
 
   // Login (public)
   { path: 'admin/login', component: AdminLoginComponent },
