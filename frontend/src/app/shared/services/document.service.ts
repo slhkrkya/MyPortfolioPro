@@ -12,4 +12,8 @@ export class DocumentService {
   getAll(): Observable<Document[]> {
     return this.http.get<Document[]>(API_URL);
   }
+
+  delete(id: number) {
+    return this.http.delete(`${API_URL}/${id}`);
+  }
 }

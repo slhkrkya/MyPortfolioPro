@@ -1,21 +1,24 @@
 import { Routes } from '@angular/router';
 import { ProjectListComponent } from './pages/project-list/project-list.component';
+import { DocumentListComponent } from './pages/document-list/document-list.component';
+import { AdminLoginComponent } from 'src/app/pages/admin-login/admin-login.component';
 import { ProjectFormComponent } from './pages/project-form/project-form.component';
 import { CvUploadComponent } from './pages/cv-upload/cv-upload.component';
-import { DocumentListComponent} from './pages/document-list/document-list.component';
+import { AdminPanelComponent } from 'src/app/pages/admin-panel/admin-panel.component';
+import { adminGuard } from './shared/guards/admin.guard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: ProjectListComponent,
-  },
-  {
-    path: 'admin/project-form',
-    component: ProjectFormComponent,
-  },
-  {
-    path: 'admin/cv-upload',
-    component: CvUploadComponent,
-  },
+  // Public
+  { path: '', component: ProjectListComponent },
   { path: 'documents', component: DocumentListComponent },
+
+  // Login (public)
+  { path: 'admin/login', component: AdminLoginComponent },
+
+  // Admin (TEK TEK guard'lı — KOPYA TANIM BIRAKMA!)
+  { path: 'admin/panel', component: AdminPanelComponent, canActivate: [adminGuard] },
+  { path: 'admin/project-form', component: ProjectFormComponent, canActivate: [adminGuard] },
+  { path: 'admin/cv-upload', component: CvUploadComponent, canActivate: [adminGuard] },
+
+  // (opsiyonel) { path: '**', redirectTo: '' },
 ];

@@ -1,23 +1,40 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 border rounded shadow">
   <h2 class="text-xl font-bold mb-4">Belgeler</h2>
 
-  <div *ngIf="documents.length === 0" class="text-gray-500 italic">
-    Henüz belge yüklenmemiş.
+  <div *ngIf="loading" class="text-gray-500">Yükleniyor...</div>
+  <div *ngIf="!loading && documents.length === 0" class="text-gray-500 italic">
+    Henüz belge yok.
   </div>
 
-  <ul class="divide-y">
+  <ul class="divide-y" *ngIf="documents.length > 0">
     <li *ngFor="let doc of documents" class="py-4">
-      <div class="flex justify-between items-center">
-        <span class="font-medium">{{ doc.fileName }}</span>
-        <a
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <div class="font-medium">{{ doc.fileName }}</div>
+          <div class="text-sm text-gray-500">
+            Yüklendi: {{ doc.uploadedAt | date: 'medium' }}
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
             [href]="'http://localhost:5291/api/documents/download/' + doc.id"
             target="_blank"
             class="text-blue-600 underline"
-        >
-          İndir
-        </a>
+          >
+            İndir
+          </a>
+
+          <button
+            *ngIf="auth.isAdmin()"
+            (click)="delete(doc)"
+            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+            title="Sil"
+          >
+            Sil
+          </button>
+        </div>
       </div>
-      <div class="text-sm text-gray-500">Yüklendi: {{ doc.uploadedAt | date:'medium' }}</div>
     </li>
   </ul>
 </div>

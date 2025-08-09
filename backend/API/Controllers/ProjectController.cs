@@ -1,6 +1,8 @@
 using Application.DTOs;
 using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -16,6 +18,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var projects = await _projectService.GetAllAsync();
@@ -23,6 +26,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var project = await _projectService.GetByIdAsync(id);
@@ -30,6 +34,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Create([FromBody] CreateProjectDto dto)
         {
             var created = await _projectService.CreateAsync(dto);
@@ -37,6 +42,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
             if (id != dto.Id) return BadRequest();
@@ -45,6 +51,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _projectService.DeleteAsync(id);

@@ -1,6 +1,8 @@
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -16,6 +18,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Upload([FromForm] IFormFile file, [FromForm] string fileName)
         {
             if (file == null || file.Length == 0)
@@ -39,6 +42,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var docs = _context.Documents
@@ -54,12 +58,26 @@ namespace API.Controllers
         }
 
         [HttpGet("download/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Download(int id)
         {
             var doc = await _context.Documents.FindAsync(id);
             if (doc == null) return NotFound();
 
             return File(doc.FileData, "application/octet-stream", doc.FileName);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var doc = await _context.Documents.FindAsync(id);
+            if (doc == null) return NotFound();
+
+            _context.Documents.Remove(doc);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/7+He03SaV7n4njoe+IgMf1CjJSyeu2WnGiJ/Nk4+Uk=",
+  "Hash": "daLcgRPjt+0+1J3VkDk3v5ACszavjShzwEeWhgyNmbI=",
   "Source": "API",
   "BasePath": "_content/API",
   "Mode": "Default",
@@ -15,111 +15,6 @@
       "Pattern": "**"
     }
   ],
-  "Assets": [
-    {
-      "Identity": "D:\\MyPortfolioPro\\backend\\API\\wwwroot\\uploads\\Salih_Karakaya_CV.pdf",
-      "SourceId": "API",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\MyPortfolioPro\\backend\\API\\wwwroot\\",
-      "BasePath": "_content/API",
-      "RelativePath": "uploads/Salih_Karakaya_CV#[.{fingerprint}]?.pdf",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "tc04bele26",
-      "Integrity": "M3IQIZtdrf3+XI8iKDTyND8Rg4u1OSAT6a0crik8vmU=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\uploads\\Salih_Karakaya_CV.pdf"
-    }
-  ],
-  "Endpoints": [
-    {
-      "Route": "uploads/Salih_Karakaya_CV.pdf",
-      "AssetFile": "D:\\MyPortfolioPro\\backend\\API\\wwwroot\\uploads\\Salih_Karakaya_CV.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "712453"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"M3IQIZtdrf3+XI8iKDTyND8Rg4u1OSAT6a0crik8vmU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 08 Aug 2025 18:32:21 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-M3IQIZtdrf3+XI8iKDTyND8Rg4u1OSAT6a0crik8vmU="
-        }
-      ]
-    },
-    {
-      "Route": "uploads/Salih_Karakaya_CV.tc04bele26.pdf",
-      "AssetFile": "D:\\MyPortfolioPro\\backend\\API\\wwwroot\\uploads\\Salih_Karakaya_CV.pdf",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "712453"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/pdf"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"M3IQIZtdrf3+XI8iKDTyND8Rg4u1OSAT6a0crik8vmU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 08 Aug 2025 18:32:21 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "tc04bele26"
-        },
-        {
-          "Name": "label",
-          "Value": "uploads/Salih_Karakaya_CV.pdf"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-M3IQIZtdrf3+XI8iKDTyND8Rg4u1OSAT6a0crik8vmU="
-        }
-      ]
-    }
-  ]
+  "Assets": [],
+  "Endpoints": []
 }

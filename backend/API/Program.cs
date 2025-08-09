@@ -1,19 +1,42 @@
 using Infrastructure.Services;
-using Microsoft.Extensions.Configuration;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure;
 using Application.Interfaces.Services;
 using Application.Common.Mappings;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// ===== JWT ayarları =====
+var jwt = builder.Configuration.GetSection("Jwt");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwt["Issuer"],
+            ValidAudience = jwt["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwt["Key"]!))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// ===== Genel servisler =====
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+
+// Katman servisleri
 builder.Services.AddInfrastructure();
 
 // CORS
@@ -27,29 +50,18 @@ builder.Services.AddCors(options =>
     });
 });
 
-// PostgreSQL bağlantısı
+// PostgreSQL bağlantısı (ApplicationDbContext)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Dependency Injection
+// DI
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
-app.UseStaticFiles(); 
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")),
-    RequestPath = "/uploads"
-});
-
-app.UseCors("AllowAngularClient");
-
-// Configure the HTTP request pipeline.
+// ===== Middleware sırası ÖNEMLİ =====
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -57,7 +69,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+
+app.UseCors("AllowAngularClient");
+
+app.UseAuthentication();     // Auth önce
+app.UseAuthorization();      // Sonra Authorization
+
 app.MapControllers();
 
 app.Run();

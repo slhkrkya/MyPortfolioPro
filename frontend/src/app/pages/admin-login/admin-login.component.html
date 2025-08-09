@@ -1,0 +1,9 @@
+<div class="max-w-sm mx-auto mt-10 p-6 border rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Admin Giriş</h2>
+  <form (ngSubmit)="submit()" class="flex flex-col gap-3">
+    <input class="p-2 border rounded" name="u" [(ngModel)]="username" placeholder="Kullanıcı adı" required />
+    <input class="p-2 border rounded" name="p" [(ngModel)]="password" type="password" placeholder="Şifre" required />
+    <button class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Giriş</button>
+    <div class="text-red-600 text-sm" *ngIf="error">{{ error }}</div>
+  </form>
+</div>
