@@ -16,4 +16,8 @@ export class DocumentService {
   delete(id: number) {
     return this.http.delete(`${API_URL}/${id}`);
   }
+  getById(id: number) {
+  return this.http.get<{ id:number; fileName:string; contentType?:string; size?:number; uploadedAt:string }>(
+    `http://localhost:5291/api/documents/${id}`);
+  }
 }

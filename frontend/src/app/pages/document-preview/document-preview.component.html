@@ -1,0 +1,35 @@
+<div class="max-w-5xl mx-auto mt-8 p-4">
+  <h1 class="text-2xl font-bold mb-4">Belge Önizleme</h1>
+
+  <div *ngIf="loading" class="animate-pulse space-y-3">
+    <div class="h-5 w-56 bg-gray-200 rounded"></div>
+    <div class="h-96 w-full bg-gray-200 rounded"></div>
+  </div>
+
+  <div *ngIf="!loading && error" class="text-red-600">{{ error }}</div>
+
+  <div *ngIf="!loading && !error">
+    <div class="mb-3 text-gray-700">
+      <span class="font-medium">Dosya:</span> {{ fileName }}
+      <span class="ml-3 text-xs px-2 py-1 bg-gray-100 rounded">{{ contentType || 'bilinmiyor' }}</span>
+    </div>
+
+    <!-- PDF -->
+    <div *ngIf="isPdf()" class="border rounded overflow-hidden h-[80vh]">
+      <iframe [src]="safeUrl" class="w-full h-full" title="PDF Preview"></iframe>
+    </div>
+
+    <!-- Resim -->
+    <div *ngIf="!isPdf() && isImage()" class="border rounded overflow-hidden">
+      <img [src]="safeUrl!" [alt]="fileName" class="max-w-full" />
+    </div>
+
+    <!-- Diğer türler: indir butonu -->
+    <div *ngIf="!isPdf() && !isImage()" class="p-6 border rounded bg-gray-50">
+      <p class="mb-2">Bu dosya türü tarayıcıda önizlenemiyor.</p>
+      <a [href]="safeUrl!" download class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        İndir ({{ fileName }})
+      </a>
+    </div>
+  </div>
+</div>

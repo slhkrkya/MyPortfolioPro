@@ -6,16 +6,18 @@ import { ProjectFormComponent } from './pages/project-form/project-form.componen
 import { CvUploadComponent } from './pages/cv-upload/cv-upload.component';
 import { AdminPanelComponent } from 'src/app/pages/admin-panel/admin-panel.component';
 import { adminGuard } from './shared/guards/admin.guard';
+import { DocumentPreviewComponent } from './pages/document-preview/document-preview.component';
 
 export const routes: Routes = [
   // Public
   { path: '', component: ProjectListComponent },
   { path: 'documents', component: DocumentListComponent },
+  { path: 'documents/:id', component: DocumentPreviewComponent },
 
   // Login (public)
   { path: 'admin/login', component: AdminLoginComponent },
 
-  // Admin (TEK TEK guard'lı — KOPYA TANIM BIRAKMA!)
+  // Admin 
   { path: 'admin/panel', component: AdminPanelComponent, canActivate: [adminGuard] },
   { path: 'admin/project-form', component: ProjectFormComponent, canActivate: [adminGuard] },
   { path: 'admin/cv-upload', component: CvUploadComponent, canActivate: [adminGuard] },

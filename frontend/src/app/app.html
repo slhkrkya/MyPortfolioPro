@@ -12,4 +12,5 @@
   <a *ngIf="!auth.isLoggedIn()" routerLink="/admin/login">Giriş</a>
   <button *ngIf="auth.isLoggedIn()" (click)="auth.logout()" class="text-red-600">Çıkış</button>
 </nav>
+<p-toast></p-toast>
 <router-outlet></router-outlet>

@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ToastModule } from 'primeng/toast'; 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet],
+  imports: [CommonModule, RouterModule, RouterOutlet, ToastModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
 })
