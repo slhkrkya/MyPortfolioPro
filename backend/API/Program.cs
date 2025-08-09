@@ -35,10 +35,17 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IGitHubImportService, GitHubImportService>();
 
 // Katman servisleri
 builder.Services.AddInfrastructure();
-
+// GitHup dan içeri aktarma
+builder.Services.AddHttpClient("github", c =>
+{
+    c.BaseAddress = new Uri("https://api.github.com/");
+    c.DefaultRequestHeaders.UserAgent.ParseAdd("MyPortfolioPro/1.0"); // GitHub zorunlu
+    c.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json");
+});
 // CORS
 builder.Services.AddCors(options =>
 {

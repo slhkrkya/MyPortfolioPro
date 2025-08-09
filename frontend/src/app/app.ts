@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
-import { AuthService } from './shared/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { ToastModule } from 'primeng/toast'; 
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,5 +13,11 @@ import { ToastModule } from 'primeng/toast';
 })
 export class App {
   title = 'frontend';
-  auth = inject(AuthService); // template: auth.isLoggedIn(), auth.isAdmin(), auth.logout()
+  auth = inject(AuthService);
+  private router = inject(Router);
+
+  logout() {
+    this.auth.logout();          // token'ı temizle
+    this.router.navigate(['/']); // ana sayfaya dön
+  }
 }

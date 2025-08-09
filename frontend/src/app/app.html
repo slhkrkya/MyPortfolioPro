@@ -1,9 +1,9 @@
 <nav class="flex gap-4 p-4 bg-gray-100 shadow">
-  <a routerLink="/">Ana Sayfa</a>
-  <a routerLink="/documents">Belgeler</a>
-  <a routerLing="/project">Projeler</a>
+  <a routerLink="/" routerLinkActive="font-bold text-blue-600">Ana Sayfa</a>
+  <a routerLink="/documents" routerLinkActive="font-bold text-blue-600">Belgeler</a>
+  <a routerLink="/projects" routerLinkActive="font-bold text-blue-600">Projeler</a>
 
-  <a *ngIf="auth.isAdmin()" routerLink="/admin/panel">Admin Panel</a>
+  <a *ngIf="auth.isAdmin()" routerLink="/admin/panel" >Admin Panel</a>
   <a *ngIf="auth.isAdmin()" routerLink="/admin/project-form">Proje Ekle</a>
   <a *ngIf="auth.isAdmin()" routerLink="/admin/cv-upload">Belge Yükle</a>
 

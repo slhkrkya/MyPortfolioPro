@@ -10,7 +10,7 @@ import { DocumentPreviewComponent } from './pages/document-preview/document-prev
 
 export const routes: Routes = [
   // Public
-  { path: '', component: ProjectListComponent },
+  { path: 'projects', component: ProjectListComponent },
   { path: 'documents', component: DocumentListComponent },
   { path: 'documents/:id', component: DocumentPreviewComponent },
 
@@ -22,5 +22,5 @@ export const routes: Routes = [
   { path: 'admin/project-form', component: ProjectFormComponent, canActivate: [adminGuard] },
   { path: 'admin/cv-upload', component: CvUploadComponent, canActivate: [adminGuard] },
 
-  // (opsiyonel) { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' }
 ];
