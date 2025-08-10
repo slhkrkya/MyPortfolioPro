@@ -13,3 +13,9 @@ html, body { height: 100%; }
   /* 17,24,39 = gray-900; nokta rengi */
   background-size: 16px 16px;   /* nokta aralığı */
 }
+
+/* slider'larda dikey scroll'u kapat, yatay kaydırmayı incelt */
+.doc-track{ scrollbar-width: thin; }
+.doc-track::-webkit-scrollbar{ height:8px }
+.doc-track::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.15); border-radius:9999px }
+.doc-track{ overflow-y:hidden !important; }
