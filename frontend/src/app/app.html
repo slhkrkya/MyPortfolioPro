@@ -93,6 +93,7 @@
           <li *ngIf="auth.isAdmin()"><a routerLink="/admin/panel">Admin Panel</a></li>
           <li *ngIf="auth.isAdmin()"><a routerLink="/admin/project-form">Proje Ekle</a></li>
           <li *ngIf="auth.isAdmin()"><a routerLink="/admin/cv-upload">Belge Yükle</a></li>
+          <li *ngIf="auth.isAdmin()"><a routerLink="/admin/profile">Profil Düzenle</a></li>
           <li class="mt-1 border-t border-neutral-200"></li>
           <li *ngIf="!auth.isLoggedIn()"><a routerLink="/admin/login">Giriş</a></li>
           <li *ngIf="auth.isLoggedIn()"><button (click)="auth.logout()">Çıkış</button></li>

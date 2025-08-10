@@ -8,9 +8,12 @@ import { AdminPanelComponent } from 'src/app/pages/admin-panel/admin-panel.compo
 import { adminGuard } from './shared/guards/admin.guard';
 import { DocumentPreviewComponent } from './pages/document-preview/document-preview.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { HomeComponent } from './pages/home/home.component/home.component';
+import { SiteProfileEditComponent } from './pages/admin-profile/site-profile-edit.component/site-profile-edit.component';
 
 export const routes: Routes = [
   // Public
+  { path: '', component: HomeComponent },
   { path: 'projects', component: ProjectListComponent },
   { path: 'documents', component: DocumentListComponent },
   { path: 'documents/:id', component: DocumentPreviewComponent },
@@ -23,6 +26,6 @@ export const routes: Routes = [
   { path: 'admin/panel', component: AdminPanelComponent, canActivate: [adminGuard] },
   { path: 'admin/project-form', component: ProjectFormComponent, canActivate: [adminGuard] },
   { path: 'admin/cv-upload', component: CvUploadComponent, canActivate: [adminGuard] },
-
+  { path: 'admin/profile', component: SiteProfileEditComponent, canActivate: [adminGuard],},
   { path: '**', redirectTo: '' }
 ];

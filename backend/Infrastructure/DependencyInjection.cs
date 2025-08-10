@@ -10,7 +10,6 @@ namespace Infrastructure
         {
             // Servisleri buraya ekle
             services.AddScoped<IProjectService, ProjectService>();
-
             // Diğer servisleri buraya ekleyebilirsin
             return services;
         }

@@ -1,0 +1,74 @@
+<div class="mx-auto max-w-3xl px-3 sm:px-4 mt-6">
+  <section class="rounded-2xl bg-gradient-to-r from-primary/15 via-secondary/10 to-accent/10
+                  p-5 md:p-6 mb-5 border border-neutral-200 shadow-sm">
+    <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900">Site Profili</h2>
+    <p class="mt-1 text-sm text-neutral-600">Ad, özet ve sosyal bağlantıları düzenleyin.</p>
+  </section>
+
+  <!-- Skeleton -->
+  <div *ngIf="loading" class="space-y-3 animate-pulse">
+    <div class="h-10 bg-neutral-200 rounded"></div>
+    <div class="h-10 bg-neutral-200 rounded"></div>
+    <div class="h-24 bg-neutral-200 rounded"></div>
+  </div>
+
+  <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="save()" class="space-y-6">
+    <div class="grid grid-cols-1 gap-4">
+      <label class="form-control">
+        <span class="label-text">Ad Soyad</span>
+        <input type="text" formControlName="fullName" class="input input-bordered" placeholder="Ad Soyad">
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Kısa Özet</span>
+        <input type="text" formControlName="tagline" class="input input-bordered" placeholder="Örn: Full-stack geliştirici…">
+      </label>
+
+      <!-- About -->
+      <div formArrayName="about">
+        <div class="mb-2 flex items-center justify-between">
+          <span class="label-text">Hakkımda (madde madde)</span>
+          <button type="button" class="btn btn-xs" (click)="addAboutLine()">Satır Ekle</button>
+        </div>
+
+        <div class="space-y-2">
+          <div *ngFor="let _ of aboutArr.controls; let i = index; trackBy: trackByIndex" class="flex gap-2">
+            <input type="text" [formControlName]="i" class="input input-bordered flex-1" placeholder="Örn: Spring Boot + React ile geliştirme">
+            <div class="flex gap-1">
+              <button type="button" class="btn btn-xs btn-ghost" (click)="moveAbout(i,-1)" [disabled]="i===0">↑</button>
+              <button type="button" class="btn btn-xs btn-ghost" (click)="moveAbout(i, 1)" [disabled]="i===aboutArr.length-1">↓</button>
+              <button type="button" class="btn btn-xs btn-error" (click)="removeAboutLine(i)">Sil</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sosyaller -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <label class="form-control">
+          <span class="label-text">GitHub</span>
+          <input type="url" formControlName="github" class="input input-bordered" placeholder="https://github.com/kullanici">
+        </label>
+        <label class="form-control">
+          <span class="label-text">LinkedIn</span>
+          <input type="url" formControlName="linkedIn" class="input input-bordered" placeholder="https://www.linkedin.com/in/...">
+        </label>
+        <label class="form-control">
+          <span class="label-text">Instagram</span>
+          <input type="url" formControlName="instagram" class="input input-bordered" placeholder="https://instagram.com/...">
+        </label>
+        <label class="form-control">
+          <span class="label-text">E-posta</span>
+          <input type="email" formControlName="email" class="input input-bordered" placeholder="ornek@mail.com">
+        </label>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving">
+        <span *ngIf="!saving">Kaydet</span>
+        <span *ngIf="saving" class="loading loading-spinner loading-sm"></span>
+      </button>
+    </div>
+  </form>
+</div>

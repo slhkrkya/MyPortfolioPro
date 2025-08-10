@@ -3,6 +3,7 @@ D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.GeneratedMSBu
 D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.AssemblyInfoInputs.cache
 D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.AssemblyInfo.cs
 D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.csproj.CoreCompileInputs.cache
+D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.sourcelink.json
 D:\MyPortfolioPro\backend\Application\bin\Debug\net9.0\Application.deps.json
 D:\MyPortfolioPro\backend\Application\bin\Debug\net9.0\Application.dll
 D:\MyPortfolioPro\backend\Application\bin\Debug\net9.0\Application.pdb
@@ -13,4 +14,3 @@ D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.dll
 D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\refint\Application.dll
 D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.pdb
 D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\ref\Application.dll
-D:\MyPortfolioPro\backend\Application\obj\Debug\net9.0\Application.sourcelink.json

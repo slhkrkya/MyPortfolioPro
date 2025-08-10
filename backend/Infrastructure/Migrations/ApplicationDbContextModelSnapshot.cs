@@ -81,6 +81,66 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("Projects");
                 });
+
+            modelBuilder.Entity("Domain.Entities.SiteProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.PrimitiveCollection<string[]>("About")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("Github")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Instagram")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("LinkedIn")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Tagline")
+                        .IsRequired()
+                        .HasMaxLength(240)
+                        .HasColumnType("character varying(240)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            About = new[] { "Hakkımda 1", "Hakkımda 2" },
+                            Email = "mail@ornek.com",
+                            FullName = "Ad Soyad",
+                            Github = "https://github.com/kullaniciadi",
+                            Instagram = "https://instagram.com/kullaniciadi",
+                            LinkedIn = "https://linkedin.com/in/kullaniciadi",
+                            Tagline = "Kısa açıklama"
+                        });
+                });
 #pragma warning restore 612, 618
         }
     }
