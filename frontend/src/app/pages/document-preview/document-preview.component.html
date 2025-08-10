@@ -1,35 +1,47 @@
-<div class="max-w-5xl mx-auto mt-8 p-4">
-  <h1 class="text-2xl font-bold mb-4">Belge Önizleme</h1>
+<div class="max-w-6xl mx-auto mt-8 p-4">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl font-bold">Belge Önizleme</h1>
+    <div class="flex items-center gap-2">
+      <button class="btn btn-sm" (click)="back()">← Geri</button>
+      <button class="btn btn-sm" (click)="openNewTab()" [disabled]="!safeUrl">Yeni Sekme</button>
+      <button class="btn btn-sm btn-primary" (click)="download()" [disabled]="!safeUrl">İndir</button>
+    </div>
+  </div>
 
+  <!-- Loading skeleton -->
   <div *ngIf="loading" class="animate-pulse space-y-3">
     <div class="h-5 w-56 bg-gray-200 rounded"></div>
     <div class="h-96 w-full bg-gray-200 rounded"></div>
   </div>
 
-  <div *ngIf="!loading && error" class="text-red-600">{{ error }}</div>
+  <!-- Hata -->
+  <div *ngIf="!loading && error" class="alert alert-error">
+    {{ error }}
+  </div>
 
+  <!-- İçerik -->
   <div *ngIf="!loading && !error">
-    <div class="mb-3 text-gray-700">
-      <span class="font-medium">Dosya:</span> {{ fileName }}
-      <span class="ml-3 text-xs px-2 py-1 bg-gray-100 rounded">{{ contentType || 'bilinmiyor' }}</span>
+    <div class="mb-3 text-gray-700 flex flex-wrap items-center gap-2">
+      <span class="font-medium">Dosya:</span>
+      <span class="badge badge-ghost">{{ fileName || 'Bilinmiyor' }}</span>
     </div>
 
     <!-- PDF -->
-    <div *ngIf="isPdf()" class="border rounded overflow-hidden h-[80vh]">
+    <div *ngIf="isPdf()" class="border rounded-xl overflow-hidden h-[80vh] bg-white">
       <iframe [src]="safeUrl" class="w-full h-full" title="PDF Preview"></iframe>
     </div>
 
     <!-- Resim -->
-    <div *ngIf="!isPdf() && isImage()" class="border rounded overflow-hidden">
-      <img [src]="safeUrl!" [alt]="fileName" class="max-w-full" />
+    <div *ngIf="!isPdf() && isImage()" class="border rounded-xl overflow-hidden bg-base-100">
+      <img [src]="safeUrl!" [alt]="fileName" class="max-w-full block mx-auto" />
     </div>
 
-    <!-- Diğer türler: indir butonu -->
-    <div *ngIf="!isPdf() && !isImage()" class="p-6 border rounded bg-gray-50">
-      <p class="mb-2">Bu dosya türü tarayıcıda önizlenemiyor.</p>
-      <a [href]="safeUrl!" download class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        İndir ({{ fileName }})
-      </a>
+    <!-- Diğer türler: indir -->
+    <div *ngIf="!isPdf() && !isImage()" class="p-6 border rounded-xl bg-base-200">
+      <p class="mb-3">Bu dosya türü tarayıcıda önizlenemiyor.</p>
+      <button class="btn btn-primary" (click)="download()" [disabled]="!safeUrl">
+        İndir ({{ fileName || 'dosya' }})
+      </button>
     </div>
   </div>
 </div>

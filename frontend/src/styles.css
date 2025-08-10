@@ -1,1 +1,5 @@
 @import "tailwindcss";
+@plugin "daisyui";   /* DaisyUI v5+, Tailwind v4 ile böyle eklenir */
+
+/* tercihen ufak reset/tema */
+html, body { height: 100%; }

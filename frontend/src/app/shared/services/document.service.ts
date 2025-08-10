@@ -12,12 +12,23 @@ export class DocumentService {
   getAll(): Observable<Document[]> {
     return this.http.get<Document[]>(this.api);
   }
+
   delete(id: number) {
     return this.http.delete(`${this.api}/${id}`);
   }
+
   getById(id: number) {
-    return this.http.get<{ id:number; fileName:string; contentType?:string; size?:number; uploadedAt:string }>(
-      `${this.api}/${id}`
-    );
+    return this.http.get<{ 
+      id: number; 
+      fileName: string; 
+      contentType?: string; 
+      size?: number; 
+      uploadedAt: string 
+    }>(`${this.api}/${id}`);
+  }
+
+  // Dosya indirme (Excel, PDF, görsel vb. her şey için)
+  download(id: number): Observable<Blob> {
+    return this.http.get(`${this.api}/download/${id}`, { responseType: 'blob' });
   }
 }

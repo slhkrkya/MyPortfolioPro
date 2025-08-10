@@ -1,62 +1,98 @@
-<div class="max-w-6xl mx-auto mt-10">
-  <h2 class="text-2xl font-bold mb-4">Belgeler</h2>
+<div class="mx-auto mt-8 px-3 sm:px-4 max-w-6xl">
+  <h2 class="text-3xl font-bold mb-4">Belgeler</h2>
 
-  <!-- Spinner -->
-  <div *ngIf="loading" class="flex justify-center my-16">
+  <div *ngIf="loading" class="flex justify-center my-12">
     <p-progressSpinner></p-progressSpinner>
   </div>
 
-  <div *ngIf="!loading && documents.length === 0" class="text-gray-500 italic">
-    Henüz belge yüklenmemiş.
-  </div>
+  <div *ngIf="!loading" class="space-y-5">
+    <ng-container *ngFor="let c of categories">
+      <!-- Sol kolon = dar, Sağ kolon = 1fr -->
+      <div class="grid grid-cols-1 md:grid-cols-[8rem,1fr] xl:grid-cols-[9rem,1fr] gap-2 items-start">
+        
+        <!-- Sol başlık: dar kolon -->
+        <div class="flex items-center gap-2 md:justify-start">
+          <h3 class="text-[15px] md:text-base font-semibold whitespace-nowrap">{{ c.label }}</h3>
+          <span class="badge badge-sm">{{ docsBy(c.key).length }}</span>
+        </div>
 
-  <div *ngIf="!loading && documents.length > 0"
-       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let doc of documents" class="p-4 border rounded-lg shadow">
-      <div class="flex items-start justify-between gap-3">
-        <div>
-          <div class="font-semibold text-lg flex items-center gap-2">
-            {{ doc.fileName }}
-            <span class="text-xs px-2 py-0.5 rounded bg-gray-100">
-              {{ ext(doc.fileName) || (doc.contentType || 'dosya') }}
-            </span>
-            <span *ngIf="doc.size != null" class="text-xs px-2 py-0.5 rounded bg-gray-100">
-              {{ formatSize(doc.size) }}
-            </span>
-          </div>
-          <div class="text-sm text-gray-500">
-            Yüklendi: {{ doc.uploadedAt | date:'medium' }}
+        <!-- Sağ: carousel alanı tam genişlik -->
+        <div class="relative">
+          <div *ngIf="docsBy(c.key).length === 0" class="text-gray-500 italic">Bu kategoride belge yok.</div>
+
+          <div *ngIf="docsBy(c.key).length > 0" class="relative">
+            <!-- oklar sadece md+ -->
+            <button
+              type="button"
+              class="btn btn-circle btn-sm absolute left-1 top-1/2 -translate-y-1/2 z-10 hidden md:flex"
+              (click)="track.scrollBy({ left: -200, behavior: 'smooth' })">❮</button>
+
+            <!-- dar padding + snap + daha küçük kart -->
+            <div #track
+              class="carousel carousel-center w-full p-2 md:p-2.5 space-x-2 md:space-x-2.5
+                     bg-base-200 rounded-lg overflow-x-auto scroll-smooth
+                     snap-x snap-mandatory">
+              
+              <div *ngFor="let doc of docsBy(c.key)"
+                   class="carousel-item snap-start shrink-0
+                          w-[11rem] sm:w-[12rem] md:w-[12.5rem] lg:w-[13rem]">
+                <article class="group card bg-base-100 rounded-lg shadow hover:shadow-md transition hover:scale-[1.01]">
+                  
+                  <!-- Önizleme: daha kısa -->
+                  <div class="relative h-32 sm:h-36 md:h-40 bg-base-200 rounded-t-lg overflow-hidden"
+                       (mouseenter)="preloadPreview(doc)">
+                    <ng-container *ngIf="previewCache.get(doc.id) as p; else placeholder">
+                      <iframe *ngIf="isPdfType(p.type) && !isImageName(doc.fileName)"
+                              [src]="p.safeRes" class="absolute inset-0 w-full h-full bg-white"
+                              title="Önizleme" loading="lazy"></iframe>
+                      <img *ngIf="!isPdfType(p.type) && isImageName(doc.fileName)"
+                           [src]="p.safeUrl" [alt]="doc.fileName"
+                           class="absolute inset-0 w-full h-full object-contain bg-white" />
+                    </ng-container>
+                    <ng-template #placeholder>
+                      <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="flex flex-col items-center gap-1">
+                          <div class="text-2xl">{{ fileIcon(doc.fileName) }}</div>
+                          <div class="skeleton h-2 w-14 rounded"></div>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-black/10"></div>
+                    <div *ngIf="previewLoading.has(doc.id)" class="absolute right-2 top-2 badge badge-outline bg-base-100 text-[10px]">
+                      yükleniyor…
+                    </div>
+                  </div>
+
+                  <!-- Gövde: kompakt -->
+                  <div class="card-body p-2">
+                    <h3 class="card-title text-[12px] font-semibold leading-tight truncate" title="{{ doc.fileName }}">
+                      {{ doc.fileName }}
+                    </h3>
+                    <p class="text-[10px] text-gray-500">
+                      <span class="px-1 py-0.5 rounded bg-gray-100 mr-1">
+                        {{ ext(doc.fileName) || (doc.contentType || 'dosya') }}
+                      </span>
+                      <span *ngIf="doc.size != null" class="px-1 py-0.5 rounded bg-gray-100">
+                        {{ formatSize(doc.size) }}
+                      </span>
+                    </p>
+                    <div class="card-actions justify-between pt-1">
+                      <a [routerLink]="['/documents', doc.id]" class="btn btn-[10px] h-6 min-h-6 px-2">Görüntüle</a>
+                      <a [href]="downloadUrl(doc.id)" class="btn btn-primary btn-[10px] h-6 min-h-6 px-2" download>İndir</a>
+                      <button *ngIf="auth.isAdmin()" (click)="delete(doc)" class="btn btn-ghost text-error btn-[10px] h-6 min-h-6 px-2">Sil</button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-circle btn-sm absolute right-1 top-1/2 -translate-y-1/2 z-10 hidden md:flex"
+              (click)="track.scrollBy({ left: 200, behavior: 'smooth' })">❯</button>
           </div>
         </div>
       </div>
-
-      <div class="mt-4 flex items-center gap-3">
-        <a
-          [href]="'http://localhost:5291/api/documents/download/' + doc.id"
-          target="_blank"
-          class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-          title="İndir"
-        >
-          İndir
-        </a>
-
-        <a
-          [routerLink]="['/documents', doc.id]"
-          class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
-          title="Önizle"
-        >
-          Önizle
-        </a>
-
-        <button
-          *ngIf="auth.isAdmin()"
-          (click)="delete(doc)"
-          class="ml-auto px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
-          title="Sil"
-        >
-          Sil
-        </button>
-      </div>
-    </div>
+    </ng-container>
   </div>
 </div>

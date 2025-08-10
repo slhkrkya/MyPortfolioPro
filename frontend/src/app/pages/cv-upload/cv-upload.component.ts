@@ -20,11 +20,15 @@ export class CvUploadComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.file = input.files[0];
+      if (!this.fileName) {
+        // Dosya adını otomatik doldur (uzantısız)
+        this.fileName = this.file.name.split('.').slice(0, -1).join('.');
+      }
     }
   }
 
   uploadFile() {
-    if (!this.file || !this.fileName) {
+    if (!this.file || !this.fileName.trim()) {
       alert('Lütfen belge adı ve dosya seçin.');
       return;
     }

@@ -6,7 +6,7 @@
       type="text"
       [(ngModel)]="fileName"
       name="fileName"
-      placeholder="Belge Adı (örnek: CV, Sertifika)"
+      placeholder="Belge Adı (örnek: CV, Sertifika, Excel Rapor)"
       class="p-2 border rounded"
       required
     />
@@ -14,7 +14,9 @@
     <input
       type="file"
       (change)="onFileSelected($event)"
-      accept=".pdf,.doc,.docx"
+      accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,
+              application/vnd.ms-excel,
+              application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       class="p-2 border rounded bg-white"
       required
     />
