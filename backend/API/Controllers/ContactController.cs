@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Application.Interfaces.Services;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Net;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("contact")]
 public class ContactController : ControllerBase
 {
     private readonly IEmailSender _email;
@@ -38,6 +40,7 @@ public class ContactController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
+    [EnableRateLimiting("contact")]
     public async Task<IActionResult> Create([FromBody] ContactRequest req)
     {
         if (!ModelState.IsValid)

@@ -2,22 +2,22 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Document } from '../models/document.model';
-
-const API_URL = 'http://localhost:5291/api/documents';
+import { environment } from '../../../environments/environment'; 
 
 @Injectable({ providedIn: 'root' })
 export class DocumentService {
   private http = inject(HttpClient);
+  private api = `${environment.apiBaseUrl}/api/documents`; 
 
   getAll(): Observable<Document[]> {
-    return this.http.get<Document[]>(API_URL);
+    return this.http.get<Document[]>(this.api);
   }
-
   delete(id: number) {
-    return this.http.delete(`${API_URL}/${id}`);
+    return this.http.delete(`${this.api}/${id}`);
   }
   getById(id: number) {
-  return this.http.get<{ id:number; fileName:string; contentType?:string; size?:number; uploadedAt:string }>(
-    `http://localhost:5291/api/documents/${id}`);
+    return this.http.get<{ id:number; fileName:string; contentType?:string; size?:number; uploadedAt:string }>(
+      `${this.api}/${id}`
+    );
   }
 }

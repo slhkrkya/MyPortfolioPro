@@ -2,6 +2,7 @@
   <a routerLink="/" routerLinkActive="font-bold text-blue-600">Ana Sayfa</a>
   <a routerLink="/documents" routerLinkActive="font-bold text-blue-600">Belgeler</a>
   <a routerLink="/projects" routerLinkActive="font-bold text-blue-600">Projeler</a>
+  <a routerLink="/contact" routerLinkActive="font-bold text-blue-600">İletişim</a>
 
   <a *ngIf="auth.isAdmin()" routerLink="/admin/panel" >Admin Panel</a>
   <a *ngIf="auth.isAdmin()" routerLink="/admin/project-form">Proje Ekle</a>

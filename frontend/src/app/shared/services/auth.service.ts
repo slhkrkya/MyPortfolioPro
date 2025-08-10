@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private api = 'http://localhost:5291/api/auth';
+  private api = `${environment.apiBaseUrl}/api/auth`;
 
   private redirectUrl: string | null = null;
 
