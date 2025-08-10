@@ -1,61 +1,86 @@
-<div class="max-w-6xl mx-auto mt-10">
-  <div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl font-bold">Projeler</h2>
+<div class="mx-auto mt-8 px-3 sm:px-4 max-w-6xl">
+  <!-- Başlık bandı -->
+  <section class="rounded-2xl bg-gradient-to-r from-primary/15 via-secondary/10 to-accent/10
+                  p-6 md:p-8 mb-5 border border-neutral-200 shadow-sm">
+    <div class="backdrop-blur-sm flex items-center justify-between gap-3">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
+          Projeler
+        </h2>
+        <p class="mt-1 text-sm text-neutral-600">GitHub’dan içe aktar veya manuel ekle; tüm çalışmalar tek yerde.</p>
+      </div>
 
-    <!-- sadece admin -->
-    <div class="flex gap-2" *ngIf="auth.isAdmin()">
-      <a routerLink="/admin/project-form" class="px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700">
-        Manuel Ekle
-      </a>
-      <button (click)="importGitHub()"
-              class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700">
-        GitHub’dan İçe Aktar
-      </button>
+      <!-- sadece admin -->
+      <div class="hidden sm:flex gap-2" *ngIf="auth.isAdmin()">
+        <a routerLink="/admin/project-form" class="btn btn-sm md:btn-md btn-primary shadow-lg shadow-primary/20">
+          Manuel Ekle
+        </a>
+        <button (click)="importGitHub()" class="btn btn-sm md:btn-md btn-secondary shadow-lg shadow-secondary/20">
+          GitHub’dan İçe Aktar
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobilde admin aksiyonları -->
+  <div class="sm:hidden mb-4 flex gap-2" *ngIf="auth.isAdmin()">
+    <a routerLink="/admin/project-form" class="btn btn-sm btn-primary flex-1">Manuel Ekle</a>
+    <button (click)="importGitHub()" class="btn btn-sm btn-secondary flex-1">GitHub’dan İçe Aktar</button>
+  </div>
+
+  <!-- Loading skeleton -->
+  <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <div *ngFor="let s of [1,2,3,4,5,6]"
+         class="h-40 rounded-xl bg-neutral-50 ring-1 ring-neutral-200 border-neutral-200 backdrop-blur-[2px] animate-pulse">
     </div>
   </div>
 
-  <!-- loading skeleton -->
-  <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="p-4 h-40 border rounded animate-pulse" *ngFor="let s of [1,2,3,4,5,6]"></div>
-  </div>
-
-  <div *ngIf="!loading && projects.length === 0" class="text-gray-500 italic">
+  <!-- Boş durum -->
+  <div *ngIf="!loading && projects.length === 0" class="text-neutral-600 italic">
     Henüz proje yok.
   </div>
 
-  <!-- proje kartları -->
-  <div *ngIf="!loading && projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let p of projects" class="p-4 border rounded-lg shadow hover:shadow-md transition">
-      <div class="flex items-start gap-3">
-        <img *ngIf="p.imageUrl"
-             [src]="p.imageUrl"
-             alt="cover"
-             class="w-16 h-16 rounded object-cover border" />
-        <div class="flex-1">
-          <div class="font-semibold text-lg">{{ p.title }}
-            <a class="mt-3 flex justify-end" *ngIf="auth.isAdmin()">
-            <button (click)="deleteProject(p.id)"
-                    class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700">
-              Sil
-            </button>
-          </a>
-          </div>
-          <div class="text-sm text-gray-600 line-clamp-3 mt-1">
-            {{ p.description }}
+  <!-- Proje kartları -->
+  <div *ngIf="!loading && projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <div *ngFor="let p of projects"
+         class="card bg-white rounded-xl border-neutral-200 ring-1 ring-neutral-200 hover:ring-primary/30 shadow-sm hover:shadow-primary/10 transition hover:-translate-y-0.5">
+
+      <div class="card-body p-4">
+        <div class="flex items-start gap-3">
+          <img *ngIf="p.imageUrl"
+               [src]="p.imageUrl"
+               alt="cover"
+               class="w-16 h-16 rounded object-cover ring-1 ring-neutral-200 border-neutral-200" />
+          <div class="flex-1">
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="font-semibold text-lg leading-tight line-clamp-2">{{ p.title }}</h3>
+
+              <!-- delete (admin) -->
+              <button *ngIf="auth.isAdmin()"
+                      (click)="deleteProject(p.id)"
+                      class="btn btn-xs btn-outline btn-error/80">
+                Sil
+              </button>
+            </div>
+
+            <p class="mt-1 text-sm text-neutral-600 line-clamp-3">
+              {{ p.description }}
+            </p>
           </div>
         </div>
-      </div>
 
-      <div class="mt-4 flex items-center justify-between">
-        <a *ngIf="p.githubUrl"
-           [href]="p.githubUrl"
-           target="_blank"
-           class="text-blue-600 underline">
-          GitHub
-        </a>
-        <span class="text-xs text-gray-500">
-          {{ p.createdAt | date:'mediumDate' }}
-        </span>
+        <div class="mt-4 flex items-center justify-between">
+          <a *ngIf="p.githubUrl"
+            [href]="p.githubUrl"
+            target="_blank" rel="noopener noreferrer"
+            class="text-blue-600 underline underline-offset-2 decoration-1 hover:text-blue-700 hover:decoration-2">
+            GitHub
+          </a>
+
+          <span class="text-xs text-neutral-600">
+            {{ p.createdAt | date:'mediumDate' }}
+          </span>
+        </div>
       </div>
     </div>
   </div>

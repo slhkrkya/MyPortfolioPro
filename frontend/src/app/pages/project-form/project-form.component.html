@@ -1,17 +1,46 @@
-<div class="max-w-xl mx-auto mt-10 p-6 border rounded shadow">
-  <h2 class="text-xl font-bold mb-4">Yeni Proje Ekle</h2>
+<div class="max-w-xl mx-auto mt-10">
+  <!-- Başlık -->
+  <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/10 to-base-300/40 p-6 ring-1 ring-neutral-200 mb-6">
+    <h2 class="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
+      Yeni Proje Ekle
+    </h2>
+    <p class="mt-1 text-sm text-neutral-600">Yeni bir projenizi ekleyin ve portföyünüzü güncel tutun.</p>
+  </section>
 
-  <form (ngSubmit)="saveProject()" class="flex flex-col gap-4">
-    <input type="text" [(ngModel)]="project.title" name="title" placeholder="Proje Başlığı" class="p-2 border rounded" required>
-    
-    <textarea [(ngModel)]="project.description" name="description" placeholder="Açıklama" class="p-2 border rounded" required></textarea>
+  <!-- Form -->
+  <div class="card bg-white rounded-xl border-neutral-200 ring-1 ring-neutral-200 shadow-md hover:shadow-primary/10 transition">
+    <div class="card-body p-6">
+      <form (ngSubmit)="saveProject()" class="flex flex-col gap-4">
+        
+        <input type="text"
+               [(ngModel)]="project.title"
+               name="title"
+               placeholder="Proje Başlığı"
+               class="input input-bordered w-full"
+               required>
+        
+        <textarea [(ngModel)]="project.description"
+                  name="description"
+                  placeholder="Açıklama"
+                  class="textarea textarea-bordered w-full min-h-[120px]"
+                  required></textarea>
+        
+        <input type="url"
+               [(ngModel)]="project.githubUrl"
+               name="githubUrl"
+               placeholder="GitHub URL"
+               class="input input-bordered w-full">
+        
+        <input type="text"
+               [(ngModel)]="project.imageUrl"
+               name="imageUrl"
+               placeholder="Görsel URL"
+               class="input input-bordered w-full">
 
-    <input type="url" [(ngModel)]="project.githubUrl" name="githubUrl" placeholder="GitHub URL" class="p-2 border rounded">
-    
-    <input type="text" [(ngModel)]="project.imageUrl" name="imageUrl" placeholder="Görsel URL" class="p-2 border rounded">
-
-    <button type="submit" class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-      Kaydet
-    </button>
-  </form>
+        <button type="submit" class="btn btn-primary mt-2">
+          Kaydet
+        </button>
+      </form>
+    </div>
+  </div>
 </div>

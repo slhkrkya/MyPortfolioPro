@@ -1,5 +1,15 @@
 @import "tailwindcss";
-@plugin "daisyui";   /* DaisyUI v5+, Tailwind v4 ile böyle eklenir */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@plugin "daisyui";
 
 /* tercihen ufak reset/tema */
 html, body { height: 100%; }
+
+/* Çok hafif noktalı doku (SVG pattern) */
+.bg-noise{
+  background-image: radial-gradient(rgba(17,24,39,.25) 1px, transparent 1px);
+  /* 17,24,39 = gray-900; nokta rengi */
+  background-size: 16px 16px;   /* nokta aralığı */
+}
