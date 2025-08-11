@@ -35,16 +35,22 @@ export class DocumentListComponent implements OnInit, OnDestroy {
 
   // Önizleme cache: id -> { raw, type, safeRes, safeUrl }
   previewCache = new Map<number, { raw: string; type: string; safeRes: SafeResourceUrl; safeUrl: SafeUrl }>();
-  // Yüklenme durumları: aynı anda birden fazla belge "yükleniyor…" gösterebilsin
+  // Yüklenme durumları
   previewLoading = new Set<number>();
 
-  // 4 satırlık kategori listesi
+  // Kategoriler
   categories: { key: DocCategory; label: string }[] = [
     { key: 'cv',        label: 'CV' },
     { key: 'sertifika', label: 'Sertifikalar' },
     { key: 'referans',  label: 'Referanslar' },
     { key: 'rapor',     label: 'Raporlar' },
   ];
+
+  // ---- Drag-to-scroll state (HTML’de kullanılanlar) ----
+  dragging = false;
+  private startX = 0;
+  private startScrollLeft = 0;
+  private activePointer?: number;
 
   ngOnInit() { this.load(); }
 
@@ -60,7 +66,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     this.documentService.getAll().subscribe({
       next: (data) => {
         this.documents = data.map(d => ({ ...d, category: this.guessCategory(d) }));
-        // Sayfa açılır açılmaz önizlemeleri arka planda indir (eşzamanlılık limiti: 4)
         this.preloadAll(4).catch(() => {});
       },
       error: () => this.msg.add({ severity: 'error', summary: 'Hata', detail: 'Belgeler yüklenemedi.' }),
@@ -68,12 +73,10 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Her kategori satırı için filtre */
   docsBy(cat: DocCategory) {
     return this.documents.filter(d => d.category === cat);
   }
 
-  /** İsim/uzantıya göre kategori tahmini */
   guessCategory(d: Document): DocCategory {
     const name = (d.fileName || '').toLowerCase();
     const ex = (name.split('.').pop() || '').toLowerCase();
@@ -86,11 +89,9 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     if (['doc','docx','rtf','odt'].includes(ex) && name.includes('cv')) return 'cv';
     if (['pdf'].includes(ex) && name.includes('sert')) return 'sertifika';
 
-    // default: rapor
     return 'rapor';
   }
 
-  /** Tüm belgeleri arka planda önizlemeye al (iş kuyruğu; concurrency parametresiyle) */
   private async preloadAll(concurrency = 4) {
     const docs = [...this.documents];
     let cursor = 0;
@@ -105,7 +106,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     await Promise.all(Array.from({ length: Math.max(1, concurrency) }, worker));
   }
 
-  /** Tek bir belgeyi önizlemeye al (hover’da da kullanılabilir) */
   async preloadPreview(doc: Document) {
     if (this.previewCache.has(doc.id) || this.previewLoading.has(doc.id)) return;
 
@@ -148,7 +148,7 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Yardımcılar
+  // ---- Helpers ----
   ext(name: string) { return (name.split('.').pop() || '').toLowerCase(); }
 
   formatSize(size?: number) {
@@ -176,5 +176,31 @@ export class DocumentListComponent implements OnInit, OnDestroy {
   isImageName(name: string) {
     const e = this.ext(name);
     return ['png','jpg','jpeg','gif','webp','bmp','svg'].includes(e);
+  }
+
+  // ---- Drag-to-scroll handlers (HTML’de bağladık) ----
+  dragStart(e: PointerEvent, el: HTMLElement) {
+    this.dragging = true;
+    this.activePointer = e.pointerId;
+    el.setPointerCapture(this.activePointer);
+    this.startX = e.clientX;
+    this.startScrollLeft = el.scrollLeft;
+    e.preventDefault();
+  }
+
+  dragMove(e: PointerEvent, el: HTMLElement) {
+    if (!this.dragging || e.pointerId !== this.activePointer) return;
+    const dx = e.clientX - this.startX;
+    el.scrollLeft = this.startScrollLeft - dx;
+    e.preventDefault();
+  }
+
+  dragEnd(el: HTMLElement) {
+    if (!this.dragging) return;
+    if (this.activePointer != null) {
+      try { el.releasePointerCapture(this.activePointer); } catch {}
+      this.activePointer = undefined;
+    }
+    this.dragging = false;
   }
 }

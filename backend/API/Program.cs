@@ -10,6 +10,7 @@ using System.Text;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.HttpOverrides; // ← eklendi
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,13 +44,15 @@ builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 // Katman servisleri
 builder.Services.AddInfrastructure();
-// GitHup dan içeri aktarma
+
+// GitHub’dan içe aktarma
 builder.Services.AddHttpClient("github", c =>
 {
     c.BaseAddress = new Uri("https://api.github.com/");
     c.DefaultRequestHeaders.UserAgent.ParseAdd("MyPortfolioPro/1.0"); // GitHub zorunlu
     c.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json");
 });
+
 // CORS
 builder.Services.AddCors(options =>
 {
@@ -65,14 +68,25 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Rate Limiting
+// ===== Forwarded Headers (proxy arkasında doğru IP) =====
+builder.Services.Configure<ForwardedHeadersOptions>(opt =>
+{
+    opt.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Cloud ortamlarında ağları önceden bilemeyeceğimiz için listeleri boşaltıyoruz:
+    opt.KnownNetworks.Clear();
+    opt.KnownProxies.Clear();
+});
+
+// ===== Rate Limiting (Contact policy) =====
 builder.Services.AddRateLimiter(options =>
 {
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests; // 429 döndür
     options.AddPolicy("contact", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
             factory: _ => new FixedWindowRateLimiterOptions
             {
+                // İstersen 1/dk yapabilirsin; şimdilik mevcut 5/dk korundu
                 PermitLimit = 5,
                 Window = TimeSpan.FromMinutes(1),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
@@ -93,6 +107,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// proxy başlıklarını oku → gerçek istemci IP’si
+app.UseForwardedHeaders();
 
 app.UseHttpsRedirection();
 

@@ -6,7 +6,7 @@
     <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
       Belgeler
     </h2>
-    <p class="mt-2 text-sm text-neutral-600">CV, Sertifikalar, Referanslar ve Raporlar — hepsi tek ekranda.</p>
+    <p class="mt-2 text-sm text-neutral-600">CV, Sertifikalar, Referanslar ve Raporlar</p>
   </section>
 
   <!-- Loading -->
@@ -25,22 +25,27 @@
           <span class="badge badge-sm">{{ docsBy(c.key).length }}</span>
         </div>
 
-        <!-- Sağ: carousel alanı -->
+        <!-- Sağ: drag-to-scroll carousel alanı -->
         <div class="relative">
           <div *ngIf="docsBy(c.key).length === 0" class="text-neutral-500 italic">Bu kategoride belge yok.</div>
 
           <div *ngIf="docsBy(c.key).length > 0" class="relative">
-            <!-- oklar sadece md+ -->
-            <button
-              type="button"
-              class="btn btn-circle btn-xs md:btn-sm absolute -left-2 top-1/2 -translate-y-1/2 z-10 hidden md:flex"
-              (click)="track.scrollBy({ left: -200, behavior: 'smooth' })">❮</button>
-
-            <!-- track: hafif cam + çok açık zemin -->
+            <!-- TRACK (tut-sürükle ile kaydırma) -->
             <div #track
                  class="carousel carousel-center w-full p-2 md:p-2.5 space-x-2 md:space-x-2.5
                         bg-white/40 backdrop-blur-md rounded-lg overflow-x-auto scroll-smooth
-                        snap-x snap-mandatory border border-neutral-200 shadow-sm">
+                        snap-x snap-mandatory border border-neutral-200 shadow-sm
+                        select-none touch-pan-y"
+                 [class.cursor-grab]="!dragging"
+                 [class.cursor-grabbing]="dragging"
+                 [class.snap-none]="dragging"
+                 [style.scrollbar-gutter]="'stable both-edges'"
+                 [style.overscroll-behavior-x]="'contain'"
+                 (pointerdown)="dragStart($event, track)"
+                 (pointermove)="dragMove($event, track)"
+                 (pointerup)="dragEnd(track)"
+                 (pointercancel)="dragEnd(track)"
+                 (mouseleave)="dragEnd(track)">
 
               <div *ngFor="let doc of docsBy(c.key)"
                    class="carousel-item snap-start shrink-0 w-[11rem] sm:w-[12rem] md:w-[12.5rem] lg:w-[13rem]">
@@ -121,11 +126,7 @@
                 </article>
               </div>
             </div>
-
-            <button
-              type="button"
-              class="btn btn-circle btn-xs md:btn-sm absolute -right-2 top-1/2 -translate-y-1/2 z-10 hidden md:flex"
-              (click)="track.scrollBy({ left: 200, behavior: 'smooth' })">❯</button>
+            <!-- /TRACK -->
           </div>
         </div>
       </div>

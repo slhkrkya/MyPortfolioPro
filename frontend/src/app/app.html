@@ -125,7 +125,13 @@
 
   <!-- CONTENT -->
   <main class="relative z-10 pt-14 md:pt-16 pb-24 md:pb-28 lg:pb-32">
-    <p-toast></p-toast>
+    <p-toast
+      position="top-right"
+      appendTo="body"
+      [baseZIndex]="9999"
+      [preventOpenDuplicates]="true"
+      [style]="{ top: '72px' }" 
+    ></p-toast>
     <router-outlet></router-outlet>
   </main>
 </div>
