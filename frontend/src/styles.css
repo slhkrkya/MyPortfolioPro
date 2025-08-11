@@ -19,3 +19,18 @@ html, body { height: 100%; }
 .doc-track::-webkit-scrollbar{ height:8px }
 .doc-track::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.15); border-radius:9999px }
 .doc-track{ overflow-y:hidden !important; }
+
+/* Uygulama kabuğu için sınıf : */
+.app-shell { background-color: #f8fafc; } /* light */
+html[data-theme='dark'] .app-shell { background-color: #0b0f19; }
+
+/* Nokta dokusu ve blob'lar dark'ta biraz daha belirgin olsun */
+html[data-theme='dark'] .bg-noise { opacity: 0.10; }
+html[data-theme='dark'] .app-blobs > div { opacity: .18; }
+
+/* Cam kartlarımız: bg-white/80 vs. dark'ta çok parlak kalmasın */
+html[data-theme='dark'] .glass {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(6px);
+}
