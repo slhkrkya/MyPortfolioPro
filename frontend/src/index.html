@@ -5,9 +5,53 @@
   <title>Frontend</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Tema: ilk yükleme -->
+  <script>
+    (function() {
+      const KEY = 'theme';
+      const root = document.documentElement;
+      try {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const saved = localStorage.getItem(KEY);
+        const initial = (saved === 'portfolio-light' || saved === 'portfolio-dark')
+          ? saved
+          : (prefersDark ? 'portfolio-dark' : 'portfolio-light');
+        root.setAttribute('data-theme', initial);
+
+        window.__setTheme = function(t) {
+          root.classList.add('theme-switching');
+          root.setAttribute('data-theme', t);
+          localStorage.setItem(KEY, t);
+          setTimeout(() => root.classList.remove('theme-switching'), 300);
+        };
+        window.__toggleTheme = function() {
+          const cur = root.getAttribute('data-theme');
+          __setTheme(cur === 'portfolio-dark' ? 'portfolio-light' : 'portfolio-dark');
+        };
+
+        // OS teması değişirse ve kullanıcı elle seçim yapmadıysa otomatik güncelle
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          if (!localStorage.getItem(KEY)) {
+            __setTheme(e.matches ? 'portfolio-dark' : 'portfolio-light');
+          }
+        });
+      } catch (e) { /* sessizce geç */ }
+    })();
+  </script>
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
   <app-root></app-root>
+
+  <!-- (İsteğe bağlı) Standalone toggle butonu örneği:
+  <button class="btn btn-ghost rounded-full fixed bottom-4 right-4 shadow"
+          onclick="window.__toggleTheme()" aria-label="Tema değiştir">
+    <i class="pi pi-sun dark:hidden"></i>
+    <i class="pi pi-moon hidden dark:inline"></i>
+    <span class="ml-2">Tema</span>
+  </button>
+  -->
 </body>
 </html>

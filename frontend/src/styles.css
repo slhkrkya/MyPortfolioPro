@@ -1,36 +1,220 @@
-@import "tailwindcss";
+/* === 1) Imports === */
+@import 'primeicons/primeicons.css';
+
+/* === 2) Tailwind === */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@plugin "daisyui";
 
-/* tercihen ufak reset/tema */
+/* === 3) Global reset & motion === */
 html, body { height: 100%; }
+* {
+  transition: color .25s ease, background-color .25s ease, border-color .25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+/* === Number input ok tuşlarını kaldır === */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
 
-/* Çok hafif noktalı doku (SVG pattern) */
+/* === 4) Doku & Scrollbar (tema uyumlu) === */
 .bg-noise{
-  background-image: radial-gradient(rgba(17,24,39,.25) 1px, transparent 1px);
-  /* 17,24,39 = gray-900; nokta rengi */
-  background-size: 16px 16px;   /* nokta aralığı */
+  background-image: radial-gradient(hsl(var(--bc) / 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+html[data-theme='portfolio-dark'] .bg-noise { opacity: .10; }
+
+/* 4.a – Global page scrollbar (sağdaki): html/body + app-shell + main */
+html, body, .app-shell, main{
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--bc) / .28) transparent;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.app-shell::-webkit-scrollbar,
+main::-webkit-scrollbar{
+  width: 10px;
+  height: 10px;
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.app-shell::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track{ background: transparent; }
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.app-shell::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb{
+  background: hsl(var(--bc) / .28);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color .2s ease, box-shadow .2s ease;
+}
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.app-shell::-webkit-scrollbar-thumb:hover,
+main::-webkit-scrollbar-thumb:hover{ background: hsl(var(--bc) / .4); }
+html::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active,
+.app-shell::-webkit-scrollbar-thumb:active,
+main::-webkit-scrollbar-thumb:active{
+  background: linear-gradient(90deg, hsl(var(--p) / .7), hsl(var(--s) / .7));
+}
+/* yatay taşmaları bastır (iç carouseller etkilenmez) */
+body{ overflow-x: clip; }
+
+/* 4.b – İç yatay track’ler için */
+.doc-track{
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--bc) / .28) transparent;
+  overflow-y: hidden !important;   /* WebKit */
+}
+.doc-track::-webkit-scrollbar{ height:8px; width:8px; }
+.doc-track::-webkit-scrollbar-track{ background: transparent; }
+.doc-track::-webkit-scrollbar-thumb{
+  background: hsl(var(--bc) / .28);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color .2s ease, box-shadow .2s ease;
+}
+.doc-track:hover::-webkit-scrollbar-thumb{
+  background: hsl(var(--bc) / .38);
+  box-shadow: 0 0 0 1px hsl(var(--b3) / .25) inset;
+}
+.doc-track:active::-webkit-scrollbar-thumb{
+  background: linear-gradient(90deg, hsl(var(--p) / .7), hsl(var(--s) / .7));
 }
 
-/* slider'larda dikey scroll'u kapat, yatay kaydırmayı incelt */
-.doc-track{ scrollbar-width: thin; }
-.doc-track::-webkit-scrollbar{ height:8px }
-.doc-track::-webkit-scrollbar-thumb{ background:rgba(0,0,0,.15); border-radius:9999px }
-.doc-track{ overflow-y:hidden !important; }
+/* === 5) App shell === */
+.app-shell { background-color: hsl(var(--b1)); }
+html[data-theme='portfolio-dark'] .app-blobs > div { opacity: .18; }
 
-/* Uygulama kabuğu için sınıf : */
-.app-shell { background-color: #f8fafc; } /* light */
-html[data-theme='dark'] .app-shell { background-color: #0b0f19; }
-
-/* Nokta dokusu ve blob'lar dark'ta biraz daha belirgin olsun */
-html[data-theme='dark'] .bg-noise { opacity: 0.10; }
-html[data-theme='dark'] .app-blobs > div { opacity: .18; }
-
-/* Cam kartlarımız: bg-white/80 vs. dark'ta çok parlak kalmasın */
-html[data-theme='dark'] .glass {
+/* Cam efekt (varsa .glass kullananlar) */
+html[data-theme='portfolio-dark'] .glass {
   background: rgba(255,255,255,0.06) !important;
   border-color: rgba(255,255,255,0.12) !important;
   backdrop-filter: blur(6px);
+}
+
+/* === 6) DaisyUI değişkenleri (override) === */
+/* LIGHT */
+:root[data-theme="portfolio-light"]{
+  --p: 244 83% 64%;  --pc: 0 0% 100%;
+  --s: 189 89% 49%;  --sc: 0 0% 100%;
+  --a: 20 90% 57%;   --ac: 0 0% 100%;
+  --b1: 0 0% 100%;   --b2: 210 20% 98%;  --b3: 220 13% 91%;  --bc: 222 47% 11%;
+  --in: 221 83% 53%; --su: 142 71% 45%;  --wa: 38 92% 50%;  --er: 0 72% 51%;
+  --rounded-box: 1rem; --rounded-btn: .75rem; --tab-radius: .6rem;
+}
+/* DARK */
+:root[data-theme="portfolio-dark"]{
+  --p: 231 94% 75%;  --pc: 230 20% 20%;
+  --s: 189 86% 56%;  --sc: 230 20% 20%;
+  --a: 24 96% 64%;   --ac: 230 20% 20%;
+  --b1: 222 31% 8%;  --b2: 222 47% 11%;  --b3: 213 35% 21%; --bc: 220 13% 91%;
+  --in: 217 91% 60%; --su: 142 72% 45%;  --wa: 43 96% 56%; --er: 0 83% 67%;
+  --rounded-box: 1rem; --rounded-btn: .75rem; --tab-radius: .6rem;
+}
+
+/* === 7) Arkaplan & metin === */
+body{
+  background:
+    radial-gradient(1200px 600px at 20% -10%, hsl(var(--p) / 0.06), transparent 70%),
+    radial-gradient(1200px 600px at 80% -20%, hsl(var(--s) / 0.06), transparent 70%),
+    linear-gradient(180deg, hsl(var(--b1)) 0%, hsl(var(--b2)) 100%);
+  color: hsl(var(--bc));
+}
+a { color: hsl(var(--p)); }
+a:hover { filter: brightness(1.08); }
+
+/* === 8) Focus erişilebilirliği === */
+:focus-visible {
+  outline: 3px solid hsl(var(--p) / .35);
+  outline-offset: 2px;
+}
+
+/* === 9) Tema geçiş animasyonu (FOUC azaltma) === */
+html.theme-switching {
+  opacity: .96;
+  transform: scale(.998);
+  transition: opacity .25s ease, transform .25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.theme-switching { transform: none; }
+}
+
+/* === 10) Component stilleri === */
+@layer components {
+  .glass-surface{
+    background-color: hsl(var(--b1) / 0.7);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--b3));
+    border-radius: var(--rounded-box, .75rem);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 10px 30px -15px rgba(0,0,0,.25);
+  }
+
+  .soft-card{
+    background-color: hsl(var(--b1));
+    border: 1px solid hsl(var(--b3));
+    border-radius: var(--rounded-box, .75rem);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 10px 30px -15px rgba(0,0,0,.25);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .soft-card:hover{ transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,.15); }
+
+  .surface-1 { background-color: hsl(var(--b1)); border: 1px solid hsl(var(--b3)); }
+  .surface-2 { background-color: hsl(var(--b2)); border: 1px solid hsl(var(--b3)); }
+  .surface-3 { background-color: hsl(var(--b1) / .85); border: 1px solid hsl(var(--b3)); }
+
+  .muted-text { color: hsl(var(--bc) / .7); }
+  .subtle-divider { border-top: 1px solid hsl(var(--b3)); }
+
+  .navbar-glass{
+    background-color: hsl(var(--b1) / .75);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid hsl(var(--b3));
+  }
+
+  .panel{
+    background-color: hsl(var(--b1));
+    border: 1px solid hsl(var(--b3));
+    border-radius: var(--rounded-box, .75rem);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 12px 32px -18px rgba(0,0,0,.35);
+  }
+
+  .input-soft{
+    height: 2.75rem; width: 100%;
+    border-radius: var(--rounded-btn, .75rem);
+    background-color: hsl(var(--b2));
+    border: 1px solid hsl(var(--b3));
+    color: hsl(var(--bc));
+    padding: 0 .875rem;
+    transition: box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
+  }
+  .input-soft::placeholder{ color: hsl(var(--bc) / .45); }
+  .input-soft:focus{
+    outline: none;
+    border-color: hsl(var(--p) / .6);
+    box-shadow: 0 0 0 3px hsl(var(--p) / .25);
+    background-color: hsl(var(--b1));
+  }
+
+  .label-soft { color: hsl(var(--bc) / .8); }
+  .muted { color: hsl(var(--bc) / .7); }
+
+  .btn-primary-solid { box-shadow: 0 8px 22px -10px rgba(79,70,229,.45); }
+  .btn-primary-solid:hover { filter: brightness(1.06); }
+
+  .comic-outline { box-shadow: 0 0 0 2px hsl(var(--bc) / .10), 0 8px 0 0 hsl(var(--b3) / .25); }
+
+  .click-outside-backdrop { position: fixed; inset: 0; z-index: 50; }
+
+  .nav-link { transition: color .2s ease, background-color .2s ease; }
+  
 }

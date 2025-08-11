@@ -1,36 +1,44 @@
-// src/app/shared/services/theme.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-export type ThemeName = 'portfolio-light' | 'portfolio-dark';
+
+type ThemeMode = 'light' | 'dark' | 'system';
+const KEY = 'theme-mode';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private key = 'ui.theme';
-  private _theme$ = new BehaviorSubject<ThemeName>('portfolio-light');
-  theme$ = this._theme$.asObservable();
+  private mode: ThemeMode;
 
   constructor() {
-    const saved = (localStorage.getItem(this.key) as ThemeName | null);
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    const initial: ThemeName = saved ?? (prefersDark ? 'portfolio-dark' : 'portfolio-light');
-    this.apply(initial);
+    const saved = (localStorage.getItem(KEY) as ThemeMode) || 'system';
+    this.mode = saved;
+    this.apply(saved, false);
 
-    try {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        const stored = localStorage.getItem(this.key);
-        if (!stored) this.apply(e.matches ? 'portfolio-dark' : 'portfolio-light');
-      });
-    } catch {}
+    // Sistem teması değişirse dinle
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (this.mode === 'system') this.apply('system', false);
+    });
   }
 
-  get current(): ThemeName { return this._theme$.value; }
-  set(theme: ThemeName) { this.apply(theme); localStorage.setItem(this.key, theme); }
-  toggle() {
-    this.set(this.current === 'portfolio-dark' ? 'portfolio-light' : 'portfolio-dark');
+  set(mode: ThemeMode) {
+    this.mode = mode;
+    localStorage.setItem(KEY, mode);
+    this.apply(mode, true);
   }
 
-  private apply(theme: ThemeName) {
-    this._theme$.next(theme);
-    document.documentElement.setAttribute('data-theme', theme); // << DaisyUI anahtar
+  get current(): ThemeMode { return this.mode; }
+
+  private apply(mode: ThemeMode, _animate: boolean) {
+    const html = document.documentElement;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = mode === 'dark' || (mode === 'system' && prefersDark);
+
+    html.setAttribute('data-theme', isDark ? 'portfolio-dark' : 'portfolio-light');
+
+    // (Opsiyonel) PrimeNG tema swap: index.html’de id’si 'primeng-theme' olan bir <link> varsa
+    // const themeLink = document.getElementById('primeng-theme') as HTMLLinkElement | null;
+    // if (themeLink) {
+    //   themeLink.href = isDark
+    //     ? 'assets/primeng-themes/aura-dark-noir.css'
+    //     : 'assets/primeng-themes/aura-light-noir.css';
+    // }
   }
 }

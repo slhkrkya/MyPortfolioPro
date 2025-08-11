@@ -1,48 +1,63 @@
-<section class="text-gray-800 body-font">
+<section class="body-font">
   <div class="container px-5 py-16 mx-auto max-w-3xl">
 
     <!-- Başlık -->
-    <div class="text-center mb-10">
-      <h1 class="text-3xl font-bold mb-2">Bana Ulaşın</h1>
-      <p class="text-gray-600">Bana ulaşmak ve konuşmak istediğiniz her türlü konu için.</p>
+    <div class="soft-card comic-outline p-6 surface-2 mb-8 text-center">
+      <h1 class="text-3xl font-extrabold mb-2"
+          style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s)));
+                 -webkit-background-clip:text;background-clip:text;color:transparent;">
+        Bana Ulaşın
+      </h1>
+      <p class="muted">Bana ulaşmak ve konuşmak istediğiniz her türlü konu için.</p>
+
+      <div class="mt-4 h-px w-full"
+           style="background-image:linear-gradient(90deg,hsl(var(--a)/0),hsl(var(--a)/.35),hsl(var(--a)/0));">
+      </div>
     </div>
 
     <!-- Üst uyarılar -->
-    <!-- Cooldown: 1 dk içinde tekrar deneme -->
-    <div *ngIf="cooldownLeftSec > 0" class="alert alert-info mb-4 shadow-sm">
+    <div *ngIf="cooldownLeftSec > 0"
+         class="mb-4 px-4 py-3 rounded-lg comic-outline"
+         style="background-color:hsl(var(--in)/.12); color:hsl(var(--in)); border:1px solid hsl(var(--in)/.35);">
       <span class="font-medium">Bekleyin:</span>
       <span class="ml-1">Tekrar göndermek için <b>{{ cooldownLeftSec }}</b> saniye kaldı.</span>
     </div>
 
-    <!-- Başarı: az önce gönderildi -->
-    <div *ngIf="justSent" class="alert alert-success mb-4 shadow-sm">
+    <div *ngIf="justSent"
+         class="mb-4 px-4 py-3 rounded-lg comic-outline"
+         style="background-color:hsl(var(--su)/.12); color:hsl(var(--su)); border:1px solid hsl(var(--su)/.35);">
       <span class="font-medium">Mesaj gönderildi!</span>
       <span class="ml-1">En kısa sürede dönüş yapılacaktır.</span>
     </div>
 
-    <!-- Global form uyarı (alanlarda hata varsa) -->
-    <div *ngIf="form.touched && form.invalid" class="alert alert-warning mb-4 shadow-sm">
+    <div *ngIf="form.touched && form.invalid"
+         class="mb-4 px-4 py-3 rounded-lg comic-outline"
+         style="background-color:hsl(var(--wa)/.12); color:hsl(var(--wa)); border:1px dashed hsl(var(--wa)/.45);">
       <span class="font-medium">Eksik/Geçersiz alanlar var.</span>
       <span class="ml-1">Lütfen formu kontrol edin.</span>
     </div>
 
     <!-- Form -->
-    <form class="bg-white rounded-2xl shadow p-6 md:p-8"
+    <form class="soft-card comic-outline p-6 md:p-8 surface-1"
           (ngSubmit)="submit()" [formGroup]="form" novalidate>
 
-      <!-- Honeypot (botlar için) -->
+      <!-- Honeypot -->
       <input type="text" formControlName="honeypot" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true"/>
 
       <!-- Name -->
       <div class="mb-6">
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Ad Soyad</label>
-        <input id="name" type="text" formControlName="name" required
-               autocomplete="name"
-               [attr.aria-invalid]="form.get('name')?.touched && form.get('name')?.invalid"
-               [class.border-red-500]="form.get('name')?.touched && form.get('name')?.invalid"
-               class="w-full rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none px-3 py-2">
-        <p class="mt-1 text-xs text-gray-500">Adınız-soyadınız.</p>
-        <div class="mt-1 text-sm text-red-600" role="alert" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+        <label for="name" class="label-soft block text-sm mb-1">Ad Soyad</label>
+        <div class="relative">
+          <i class="pi pi-user absolute left-3 top-1/2 -translate-y-1/2" style="color:hsl(var(--s));opacity:.85"></i>
+          <input id="name" type="text" formControlName="name" required autocomplete="name"
+                 [attr.aria-invalid]="form.get('name')?.touched && form.get('name')?.invalid"
+                 class="input-soft pl-10"
+                 [class.border-red-500]="form.get('name')?.touched && form.get('name')?.invalid"
+                 placeholder="Ad Soyad">
+        </div>
+        <p class="mt-1 text-xs muted">Adınız-soyadınız.</p>
+        <div class="mt-1 text-sm" role="alert" *ngIf="form.get('name')?.touched && form.get('name')?.invalid"
+             style="color:hsl(var(--er));">
           <span *ngIf="form.get('name')?.errors?.['required']">Bu alan zorunludur.</span>
           <span *ngIf="form.get('name')?.errors?.['maxlength']">Çok uzun (maks. 100).</span>
         </div>
@@ -50,14 +65,18 @@
 
       <!-- Email -->
       <div class="mb-6">
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
-        <input id="email" type="email" formControlName="email" required
-               inputmode="email" autocomplete="email"
-               [attr.aria-invalid]="form.get('email')?.touched && form.get('email')?.invalid"
-               [class.border-red-500]="form.get('email')?.touched && form.get('email')?.invalid"
-               class="w-full rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none px-3 py-2">
-        <p class="mt-1 text-xs text-gray-500">Geri dönüş için kullanılacak adres.</p>
-        <div class="mt-1 text-sm text-red-600" role="alert" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        <label for="email" class="label-soft block text-sm mb-1">E-posta</label>
+        <div class="relative">
+          <i class="pi pi-envelope absolute left-3 top-1/2 -translate-y-1/2" style="opacity:.75"></i>
+          <input id="email" type="email" formControlName="email" required inputmode="email" autocomplete="email"
+                 [attr.aria-invalid]="form.get('email')?.touched && form.get('email')?.invalid"
+                 class="input-soft pl-10"
+                 [class.border-red-500]="form.get('email')?.touched && form.get('email')?.invalid"
+                 placeholder="mail@domain.com">
+        </div>
+        <p class="mt-1 text-xs muted">Geri dönüş için kullanılacak adres.</p>
+        <div class="mt-1 text-sm" role="alert" *ngIf="form.get('email')?.touched && form.get('email')?.invalid"
+             style="color:hsl(var(--er));">
           <span *ngIf="form.get('email')?.errors?.['required']">Bu alan zorunludur.</span>
           <span *ngIf="form.get('email')?.errors?.['email']">Geçerli bir e-posta giriniz.</span>
           <span *ngIf="form.get('email')?.errors?.['maxlength']">Çok uzun (maks. 150).</span>
@@ -66,13 +85,17 @@
 
       <!-- Phone (optional) -->
       <div class="mb-6">
-        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Telefon (opsiyonel)</label>
-        <input id="phone" type="tel" formControlName="phone" inputmode="tel" autocomplete="tel"
-               placeholder="+90 5XX XXX XX XX"
-               [class.border-red-500]="form.get('phone')?.touched && form.get('phone')?.invalid"
-               class="w-full rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none px-3 py-2">
-        <p class="mt-1 text-xs text-gray-500">İsterseniz telefonunuzu bırakabilirsiniz; zorunlu değil.</p>
-        <div class="mt-1 text-sm text-red-600" role="alert" *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid">
+        <label for="phone" class="label-soft block text-sm mb-1">Telefon (opsiyonel)</label>
+        <div class="relative">
+          <i class="pi pi-phone absolute left-3 top-1/2 -translate-y-1/2" style="color:hsl(var(--a));opacity:.9"></i>
+          <input id="phone" type="tel" formControlName="phone" inputmode="tel" autocomplete="tel"
+                 class="input-soft pl-10"
+                 [class.border-red-500]="form.get('phone')?.touched && form.get('phone')?.invalid"
+                 placeholder="+90 5XX XXX XX XX">
+        </div>
+        <p class="mt-1 text-xs muted">İsterseniz telefonunuzu bırakabilirsiniz; zorunlu değil.</p>
+        <div class="mt-1 text-sm" role="alert" *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid"
+             style="color:hsl(var(--er));">
           <span *ngIf="form.get('phone')?.errors?.['maxlength']">Çok uzun (maks. 20).</span>
           <span *ngIf="form.get('phone')?.errors?.['pattern']">Telefon formatı geçersiz.</span>
         </div>
@@ -80,17 +103,20 @@
 
       <!-- Message -->
       <div class="mb-6">
-        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mesaj</label>
+        <label for="message" class="label-soft block text-sm mb-1">Mesaj</label>
         <textarea id="message" rows="6" formControlName="message" required
+                  class="input-soft resize-y"
                   [class.border-red-500]="form.get('message')?.touched && form.get('message')?.invalid"
-                  class="w-full rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none px-3 py-2 resize-y"></textarea>
+                  placeholder="Mesajınızı yazın..."></textarea>
+
         <div class="mt-1 flex items-center justify-between">
-          <div class="text-sm text-red-600" role="alert" *ngIf="form.get('message')?.touched && form.get('message')?.invalid">
+          <div class="text-sm" role="alert" *ngIf="form.get('message')?.touched && form.get('message')?.invalid"
+               style="color:hsl(var(--er));">
             <span *ngIf="form.get('message')?.errors?.['required']">Bu alan zorunludur.</span>
             <span *ngIf="form.get('message')?.errors?.['minlength']">En az 10 karakter olmalı.</span>
             <span *ngIf="form.get('message')?.errors?.['maxlength']">Çok uzun (maks. 4000).</span>
           </div>
-          <div class="text-xs text-gray-500">
+          <div class="text-xs muted">
             {{ (form.get('message')?.value?.length || 0) }}/4000
           </div>
         </div>
@@ -99,68 +125,58 @@
       <!-- Submit -->
       <button type="submit"
               [disabled]="loading || form.invalid || cooldownLeftSec > 0"
-              class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 text-white font-medium py-2.5 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition">
-        <svg *ngIf="loading" class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" d="M4 12a8 8 0 018-8v4" stroke="currentColor" stroke-width="4"></path>
-        </svg>
-        <span>
-          <ng-container *ngIf="!loading && cooldownLeftSec === 0; else waitTpl">Gönder</ng-container>
-        </span>
+              class="w-full btn border-0 btn-primary-solid"
+              style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc));">
+        <ng-container *ngIf="!loading && cooldownLeftSec === 0; else waitTpl">
+          <i class="pi pi-send mr-2"></i>Gönder
+        </ng-container>
       </button>
       <ng-template #waitTpl>
         {{ loading ? 'Gönderiliyor…' : ('Bekleyin… ' + cooldownLeftSec + ' sn') }}
       </ng-template>
 
-      <p class="mt-3 text-center text-xs text-gray-500">En kısa zamanda tarafınıza dönüş yapılacaktır.</p>
+      <p class="mt-3 text-center text-xs muted">En kısa zamanda tarafınıza dönüş yapılacaktır.</p>
     </form>
 
     <!-- Divider -->
-    <hr class="mt-10 mb-6 border-gray-200">
+    <hr class="mt-10 mb-6" style="border-color:hsl(var(--b3));">
 
     <!-- Contact info + social -->
     <div class="text-center space-y-4">
       <a href="mailto:slhkrkyh@gmail.com"
-         class="text-indigo-600 hover:text-indigo-700 font-medium break-all">
+         class="font-medium break-all"
+         style="color:hsl(var(--p));">
         slhkrkyh@gmail.com
       </a>
 
       <div class="flex items-center justify-center gap-6 pt-2">
-        <!-- Instagram -->
+        <!-- Instagram (accent) -->
         <a href="https://instagram.com/slhkrkya" target="_blank" rel="noopener"
-           class="text-gray-500 hover:text-gray-700 transition" aria-label="Instagram">
-          <!-- svg -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5zM17.75 6a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/>
-          </svg>
+           class="transition" aria-label="Instagram"
+           style="color:hsl(var(--a));">
+          <i class="pi pi-instagram text-xl"></i>
         </a>
 
-        <!-- LinkedIn -->
+        <!-- LinkedIn (secondary) -->
         <a href="https://www.linkedin.com/in/salih-karakaya-a43818299/" target="_blank" rel="noopener"
-           class="text-gray-500 hover:text-gray-700 transition" aria-label="LinkedIn">
-          <!-- svg -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4zM8 8h3.8v2.05h.05c.53-1 1.84-2.05 3.78-2.05C19.4 8 23 10.3 23 15.3V23h-4v-6.3c0-1.5-.03-3.43-2.1-3.43-2.1 0-2.42 1.64-2.42 3.33V23h-4V8z"/>
-          </svg>
+           class="transition" aria-label="LinkedIn"
+           style="color:hsl(var(--s));">
+          <i class="pi pi-linkedin text-xl"></i>
         </a>
 
-        <!-- GitHub -->
+        <!-- GitHub (nötr) -->
         <a href="https://github.com/slhkrkya" target="_blank" rel="noopener"
-           class="text-gray-500 hover:text-gray-700 transition" aria-label="GitHub">
-          <!-- svg -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 .5A12 12 0 0 0 0 12.6c0 5.34 3.44 9.86 8.2 11.46.6.12.82-.26.82-.58v-2.2c-3.34.74-4.04-1.62-4.04-1.62-.54-1.4-1.32-1.77-1.32-1.77-1.08-.76.08-.75.08-.75 1.2.09 1.84 1.26 1.84 1.26 1.07 1.9 2.8 1.35 3.48 1.04.11-.8.42-1.35.76-1.66-2.67-.31-5.47-1.37-5.47-6.1 0-1.35.46-2.45 1.23-3.31-.12-.31-.53-1.57.12-3.27 0 0 1.01-.33 3.3 1.26a11.2 11.2 0 0 1 6 0c2.3-1.6 3.3-1.26 3.3-1.26.65 1.7.24 2.96.12 3.27.77.86 1.23 1.96 1.23 3.31 0 4.74-2.81 5.79-5.49 6.1.43.38.81 1.12.81 2.27v3.36c0 .32.22.71.83.58A12 12 0 0 0 24 12.6 12 12 0 0 0 12 .5z"/>
-          </svg>
+           class="transition" aria-label="GitHub"
+           style="color:hsl(var(--bc)/.8);">
+          <i class="pi pi-github text-xl"></i>
         </a>
 
-        <!-- WhatsApp -->
+        <!-- WhatsApp (success) -->
         <a href="https://wa.me/905369749036?text=Merhaba%2C%20portfolyonuzdan%20ula%C5%9F%C4%B1yorum."
            target="_blank" rel="noopener"
-           class="text-gray-500 hover:text-gray-700 transition" aria-label="WhatsApp">
-          <!-- svg -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.62-6.003C.122 5.281 5.403 0 12.057 0c3.178 0 6.167 1.24 8.41 3.484C22.71 5.728 23.95 8.717 23.95 11.895c0 6.654-5.281 11.936-11.936 11.936a11.9 11.9 0 0 1-6.003-1.62L.057 24zm6.597-3.807c1.72.995 3.276 1.591 5.392 1.591 5.448 0 9.886-4.438 9.886-9.885 0-2.64-1.027-5.132-2.89-7.001C17.173 3.026 14.68 2 12.04 2 6.592 2 2.154 6.438 2.154 11.887c0 2.115.596 3.672 1.59 5.392l-.994 3.648 3.904-.834zm10.02-5.464c-.084-.14-.308-.224-.646-.393-.339-.168-2-.986-2.309-1.098-.308-.112-.533-.168-.757.168-.224.336-.868 1.098-1.065 1.322-.196.224-.392.252-.73.084-.339-.168-1.43-.526-2.727-1.678-1.008-.898-1.69-2.007-1.887-2.346-.196-.336-.021-.518.147-.686.151-.15.336-.392.504-.588.168-.196.224-.336.336-.56.112-.224.056-.42-.028-.588-.084-.168-.757-1.826-1.037-2.5-.273-.664-.552-.574-.757-.574l-.646-.012c-.196 0-.588.084-.896.42-.308.336-1.176 1.15-1.176 2.803s1.205 3.251 1.373 3.477c.168.224 2.366 3.61 5.73 5.061.802.345 1.427.551 1.914.706.804.256 1.535.22 2.115.133.646-.098 2-.82 2.283-1.614.28-.793.28-1.475.196-1.614z"/>
-          </svg>
+           class="transition" aria-label="WhatsApp"
+           style="color:hsl(var(--su));">
+          <i class="pi pi-whatsapp text-xl"></i>
         </a>
       </div>
     </div>

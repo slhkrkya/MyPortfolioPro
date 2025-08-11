@@ -1,50 +1,74 @@
 <div class="max-w-6xl mx-auto mt-10 p-4">
+
   <!-- Başlık -->
-  <section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary/20 via-secondary/10 to-accent/10 p-5 ring-1 ring-neutral-200 mb-6 flex flex-wrap items-center justify-between gap-4">
+  <section class="soft-card comic-outline surface-2 p-5 mb-6 flex flex-wrap items-center justify-between gap-4">
     <div>
-      <h1 class="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
+      <h1 class="text-3xl font-extrabold tracking-tight"
+          style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s)),hsl(var(--a)));
+                 -webkit-background-clip:text;background-clip:text;color:transparent;">
         Belge Önizleme
       </h1>
+      <div class="mt-2 h-px w-full"
+           style="background-image:linear-gradient(90deg,hsl(var(--a)/0),hsl(var(--a)/.35),hsl(var(--a)/0));">
+      </div>
     </div>
     <div class="flex items-center gap-2">
-      <button class="btn btn-sm btn-ghost" (click)="back()">← Geri</button>
-      <button class="btn btn-sm btn-outline" (click)="openNewTab()" [disabled]="!safeUrl">Yeni Sekme</button>
-      <button class="btn btn-sm btn-primary" (click)="download()" [disabled]="!safeUrl">İndir</button>
+      <button class="btn btn-sm border-0"
+              style="background-color:hsl(var(--b3));color:hsl(var(--bc));"
+              (click)="back()">← Geri</button>
+      <button class="btn btn-sm btn-outline border"
+              style="border-color:hsl(var(--s));color:hsl(var(--s));"
+              (click)="openNewTab()" [disabled]="!safeUrl">
+        Yeni Sekme
+      </button>
+      <button class="btn btn-sm border-0 btn-primary-solid"
+              style="background-color:hsl(var(--p));color:hsl(var(--pc));"
+              (click)="download()" [disabled]="!safeUrl">
+        İndir
+      </button>
     </div>
   </section>
 
   <!-- Loading skeleton -->
   <div *ngIf="loading" class="animate-pulse space-y-4">
-    <div class="h-5 w-56 bg-base-200 rounded"></div>
-    <div class="h-96 w-full bg-base-200 rounded"></div>
+    <div class="h-5 w-56 rounded" style="background-color:hsl(var(--b3)/.35)"></div>
+    <div class="h-96 w-full rounded" style="background-color:hsl(var(--b3)/.35)"></div>
   </div>
 
   <!-- Hata -->
-  <div *ngIf="!loading && error" class="alert alert-error shadow">
+  <div *ngIf="!loading && error"
+       class="comic-outline px-4 py-3 rounded-lg"
+       style="background-color:hsl(var(--er)/.12);color:hsl(var(--er));border:1px solid hsl(var(--er)/.35);">
     {{ error }}
   </div>
 
   <!-- İçerik -->
   <div *ngIf="!loading && !error">
-    <div class="mb-3 text-gray-700 flex flex-wrap items-center gap-2">
+    <div class="mb-3 flex flex-wrap items-center gap-2 muted">
       <span class="font-medium">Dosya:</span>
-      <span class="badge badge-outline">{{ fileName || 'Bilinmiyor' }}</span>
+      <span class="badge badge-outline"
+            style="border-color:hsl(var(--a));color:hsl(var(--a));">
+        {{ fileName || 'Bilinmiyor' }}
+      </span>
     </div>
 
     <!-- PDF -->
-    <div *ngIf="isPdf()" class="border border-base-200 rounded-xl overflow-hidden shadow-lg h-[80vh] bg-base-100">
+    <div *ngIf="isPdf()" class="soft-card comic-outline overflow-hidden h-[80vh] surface-1">
       <iframe [src]="safeUrl" class="w-full h-full" title="PDF Preview"></iframe>
     </div>
 
     <!-- Resim -->
-    <div *ngIf="!isPdf() && isImage()" class="border border-base-200 rounded-xl overflow-hidden shadow-lg bg-base-100">
+    <div *ngIf="!isPdf() && isImage()" class="soft-card comic-outline overflow-hidden surface-1">
       <img [src]="safeUrl!" [alt]="fileName" class="max-w-full mx-auto" />
     </div>
 
     <!-- Diğer türler -->
-    <div *ngIf="!isPdf() && !isImage()" class="p-6 border border-base-200 rounded-xl bg-base-200 shadow-inner">
+    <div *ngIf="!isPdf() && !isImage()"
+         class="soft-card comic-outline surface-2 p-6 text-center">
       <p class="mb-3">Bu dosya türü tarayıcıda önizlenemiyor.</p>
-      <button class="btn btn-primary" (click)="download()" [disabled]="!safeUrl">
+      <button class="btn border-0 btn-primary-solid"
+              style="background-color:hsl(var(--p));color:hsl(var(--pc));"
+              (click)="download()" [disabled]="!safeUrl">
         İndir ({{ fileName || 'dosya' }})
       </button>
     </div>

@@ -1,45 +1,78 @@
 <div class="max-w-xl mx-auto mt-10">
+
   <!-- Başlık -->
-  <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/10 to-base-300/40 p-6 ring-1 ring-neutral-200 mb-6">
-    <h2 class="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
+  <section class="soft-card comic-outline surface-2 p-6 mb-6">
+    <h2 class="text-3xl font-extrabold tracking-tight"
+        style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s)),hsl(var(--a)));
+               -webkit-background-clip:text;background-clip:text;color:transparent;">
       Yeni Proje Ekle
     </h2>
-    <p class="mt-1 text-sm text-neutral-600">Yeni bir projenizi ekleyin ve portföyünüzü güncel tutun.</p>
+    <p class="mt-1 muted">Yeni bir projen ekleyin ve portföyünüzü güncel tutun.</p>
+    <div class="mt-4 h-px w-full"
+         style="background-image:linear-gradient(90deg,hsl(var(--a)/0),hsl(var(--a)/.35),hsl(var(--a)/0));"></div>
   </section>
 
   <!-- Form -->
-  <div class="card bg-white rounded-xl border-neutral-200 ring-1 ring-neutral-200 shadow-md hover:shadow-primary/10 transition">
-    <div class="card-body p-6">
+  <div class="soft-card comic-outline surface-1">
+    <div class="p-6">
       <form (ngSubmit)="saveProject()" class="flex flex-col gap-4">
-        
-        <input type="text"
-               [(ngModel)]="project.title"
-               name="title"
-               placeholder="Proje Başlığı"
-               class="input input-bordered w-full"
-               required>
-        
-        <textarea [(ngModel)]="project.description"
-                  name="description"
-                  placeholder="Açıklama"
-                  class="textarea textarea-bordered w-full min-h-[120px]"
-                  required></textarea>
-        
-        <input type="url"
-               [(ngModel)]="project.githubUrl"
-               name="githubUrl"
-               placeholder="GitHub URL"
-               class="input input-bordered w-full">
-        
-        <input type="text"
-               [(ngModel)]="project.imageUrl"
-               name="imageUrl"
-               placeholder="Görsel URL"
-               class="input input-bordered w-full">
 
-        <button type="submit" class="btn btn-primary mt-2">
-          Kaydet
+        <!-- Başlık -->
+        <div class="relative">
+          <i class="pi pi-pen-to-square absolute left-3 top-1/2 -translate-y-1/2"
+             style="color:hsl(var(--s));opacity:.9"></i>
+          <input type="text"
+                 [(ngModel)]="project.title"
+                 name="title"
+                 placeholder="Proje Başlığı"
+                 class="input-soft pl-10"
+                 required>
+        </div>
+
+        <!-- Açıklama -->
+        <div class="relative">
+          <i class="pi pi-align-left absolute left-3 top-3"
+             style="color:hsl(var(--a));opacity:.9"></i>
+          <textarea [(ngModel)]="project.description"
+                    name="description"
+                    placeholder="Açıklama"
+                    class="input-soft min-h-[120px] pt-3 pl-10 resize-y"
+                    required></textarea>
+        </div>
+
+        <!-- GitHub URL -->
+        <div class="relative">
+          <i class="pi pi-github absolute left-3 top-1/2 -translate-y-1/2" style="opacity:.75"></i>
+          <input type="url"
+                 [(ngModel)]="project.githubUrl"
+                 name="githubUrl"
+                 placeholder="GitHub URL"
+                 class="input-soft pl-10">
+        </div>
+
+        <!-- Görsel URL -->
+        <div class="relative">
+          <i class="pi pi-image absolute left-3 top-1/2 -translate-y-1/2"
+             style="color:hsl(var(--s));opacity:.9"></i>
+          <input type="text"
+                 [(ngModel)]="project.imageUrl"
+                 name="imageUrl"
+                 placeholder="Görsel URL"
+                 class="input-soft pl-10">
+        </div>
+
+        <!-- CTA -->
+        <button type="submit"
+                class="btn w-full border-0 btn-primary-solid mt-2"
+                style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc));">
+          <i class="pi pi-save mr-2"></i>Kaydet
         </button>
+
+        <!-- Minik ipucu şeridi (opsiyonel) -->
+        <div class="text-xs mt-1 px-3 py-2 rounded-md"
+             style="background-color:hsl(var(--in)/.10); color:hsl(var(--in)); border:1px dashed hsl(var(--in)/.35);">
+          İpucu: GitHub linki eklersen kartta otomatik gösteririr.
+        </div>
       </form>
     </div>
   </div>

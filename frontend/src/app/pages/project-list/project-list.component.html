@@ -1,69 +1,83 @@
 <div class="mx-auto mt-8 px-3 sm:px-4 max-w-6xl">
+
   <!-- Başlık bandı -->
-  <section class="rounded-2xl bg-gradient-to-r from-primary/15 via-secondary/10 to-accent/10
-                  p-6 md:p-8 mb-5 border border-neutral-200 shadow-sm">
-    <div class="backdrop-blur-sm flex items-center justify-between gap-3">
+  <section class="soft-card comic-outline surface-2 p-6 md:p-8 mb-5">
+    <div class="flex items-center justify-between gap-3">
       <div>
-        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight"
+            style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s)),hsl(var(--a)));
+                   -webkit-background-clip:text;background-clip:text;color:transparent;">
           Projeler
         </h2>
-        <p class="mt-1 text-sm text-neutral-600">GitHub projelerime buradan ulaşabilirsiniz</p>
+        <p class="mt-1 muted">GitHub projelerime buradan ulaşabilirsiniz</p>
       </div>
 
       <!-- sadece admin -->
       <div class="hidden sm:flex gap-2" *ngIf="auth.isAdmin()">
-        <a routerLink="/admin/project-form" class="btn btn-sm md:btn-md btn-primary shadow-lg shadow-primary/20">
-          Manuel Ekle
+        <a routerLink="/admin/project-form"
+          class="btn btn-sm md:btn-md border-0 rounded-full px-4"
+          style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc)); box-shadow:0 4px 8px hsl(var(--p)/.25)">
+          <i class="pi pi-plus mr-2"></i>Manuel Ekle
         </a>
-        <button (click)="importGitHub()" class="btn btn-sm md:btn-md btn-secondary shadow-lg shadow-secondary/20">
-          GitHub’dan İçe Aktar
+        <button (click)="importGitHub()"
+                class="btn btn-sm md:btn-md border-0 rounded-full px-4"
+                style="background-image:linear-gradient(90deg,hsl(var(--s)),hsl(var(--a))); color:hsl(var(--sc)); box-shadow:0 4px 8px hsl(var(--s)/.25)">
+          <i class="pi pi-github mr-2"></i>GitHub’dan İçe Aktar
         </button>
       </div>
     </div>
   </section>
 
-  <!-- Mobilde admin aksiyonları -->
+  <!-- Mobil admin -->
   <div class="sm:hidden mb-4 flex gap-2" *ngIf="auth.isAdmin()">
-    <a routerLink="/admin/project-form" class="btn btn-sm btn-primary flex-1">Manuel Ekle</a>
-    <button (click)="importGitHub()" class="btn btn-sm btn-secondary flex-1">GitHub’dan İçe Aktar</button>
+    <a routerLink="/admin/project-form"
+       class="btn btn-sm flex-1 border-0"
+       style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc));">
+       <i class="pi pi-plus mr-2"></i>Manuel Ekle
+    </a>
+    <button (click)="importGitHub()"
+       class="btn btn-sm flex-1 border-0"
+       style="background-image:linear-gradient(90deg,hsl(var(--s)),hsl(var(--a))); color:hsl(var(--sc));">
+       <i class="pi pi-github mr-2"></i>İçe Aktar
+    </button>
   </div>
 
   <!-- Loading skeleton -->
   <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
     <div *ngFor="let s of [1,2,3,4,5,6]"
-         class="h-40 rounded-xl bg-neutral-50 ring-1 ring-neutral-200 border-neutral-200 backdrop-blur-[2px] animate-pulse">
+         class="h-40 rounded-xl surface-1 comic-outline animate-pulse">
     </div>
   </div>
 
-  <!-- Boş durum -->
-  <div *ngIf="!loading && projects.length === 0" class="text-neutral-600 italic">
+  <!-- Boş -->
+  <div *ngIf="!loading && projects.length === 0" class="muted italic">
     Henüz proje yok.
   </div>
 
-  <!-- Proje kartları -->
-  <div *ngIf="!loading && projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+  <!-- Kartlar -->
+  <div *ngIf="!loading && projects.length > 0"
+       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
     <div *ngFor="let p of projects"
-         class="card bg-white rounded-xl border-neutral-200 ring-1 ring-neutral-200 hover:ring-primary/30 shadow-sm hover:shadow-primary/10 transition hover:-translate-y-0.5">
+         class="soft-card surface-1 comic-outline hover:-translate-y-0.5 hover:shadow-lg transition">
 
-      <div class="card-body p-4">
+      <div class="p-4">
         <div class="flex items-start gap-3">
           <img *ngIf="p.imageUrl"
                [src]="p.imageUrl"
                alt="cover"
-               class="w-16 h-16 rounded object-cover ring-1 ring-neutral-200 border-neutral-200" />
+               class="w-16 h-16 rounded object-cover comic-outline" />
           <div class="flex-1">
             <div class="flex items-start justify-between gap-2">
               <h3 class="font-semibold text-lg leading-tight line-clamp-2">{{ p.title }}</h3>
-
-              <!-- delete (admin) -->
               <button *ngIf="auth.isAdmin()"
                       (click)="deleteProject(p.id)"
-                      class="btn btn-xs btn-outline btn-error/80">
-                Sil
+                      class="btn btn-xs border-0"
+                      style="background-color:hsl(var(--er)/.15); color:hsl(var(--er));">
+                <i class="pi pi-trash"></i>
               </button>
             </div>
 
-            <p class="mt-1 text-sm text-neutral-600 line-clamp-3">
+            <p class="mt-1 text-sm muted line-clamp-3">
               {{ p.description }}
             </p>
           </div>
@@ -71,13 +85,14 @@
 
         <div class="mt-4 flex items-center justify-between">
           <a *ngIf="p.githubUrl"
-            [href]="p.githubUrl"
-            target="_blank" rel="noopener noreferrer"
-            class="text-blue-600 underline underline-offset-2 decoration-1 hover:text-blue-700 hover:decoration-2">
-            GitHub
+             [href]="p.githubUrl"
+             target="_blank" rel="noopener noreferrer"
+             class="text-sm underline decoration-1 underline-offset-2 hover:decoration-2"
+             style="color:hsl(var(--p));">
+            <i class="pi pi-github mr-1"></i>GitHub
           </a>
 
-          <span class="text-xs text-neutral-600">
+          <span class="text-xs muted">
             {{ p.createdAt | date:'mediumDate' }}
           </span>
         </div>

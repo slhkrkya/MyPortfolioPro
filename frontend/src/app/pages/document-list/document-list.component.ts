@@ -35,7 +35,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
 
   // Önizleme cache: id -> { raw, type, safeRes, safeUrl }
   previewCache = new Map<number, { raw: string; type: string; safeRes: SafeResourceUrl; safeUrl: SafeUrl }>();
-  // Yüklenme durumları
   previewLoading = new Set<number>();
 
   // Kategoriler
@@ -46,11 +45,13 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     { key: 'rapor',     label: 'Raporlar' },
   ];
 
-  // ---- Drag-to-scroll state (HTML’de kullanılanlar) ----
-  dragging = false;
+  // ---- Drag-to-scroll state ----
+  dragging = false;           // HTML’de click iptali için
   private startX = 0;
   private startScrollLeft = 0;
   private activePointer?: number;
+  private pointerMoved = false;
+  private readonly MOVE_THRESHOLD = 6; // px
 
   ngOnInit() { this.load(); }
 
@@ -73,9 +74,7 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     });
   }
 
-  docsBy(cat: DocCategory) {
-    return this.documents.filter(d => d.category === cat);
-  }
+  docsBy(cat: DocCategory) { return this.documents.filter(d => d.category === cat); }
 
   guessCategory(d: Document): DocCategory {
     const name = (d.fileName || '').toLowerCase();
@@ -95,14 +94,12 @@ export class DocumentListComponent implements OnInit, OnDestroy {
   private async preloadAll(concurrency = 4) {
     const docs = [...this.documents];
     let cursor = 0;
-
     const worker = async () => {
       while (cursor < docs.length) {
         const doc = docs[cursor++];
         try { await this.preloadPreview(doc); } catch {}
       }
     };
-
     await Promise.all(Array.from({ length: Math.max(1, concurrency) }, worker));
   }
 
@@ -178,29 +175,51 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     return ['png','jpg','jpeg','gif','webp','bmp','svg'].includes(e);
   }
 
-  // ---- Drag-to-scroll handlers (HTML’de bağladık) ----
+  // ---- Drag-to-scroll ----
   dragStart(e: PointerEvent, el: HTMLElement) {
-    this.dragging = true;
+    // buton/link/input/svg alanlarında drag başlatma
+    const target = e.target as HTMLElement;
+    if (target.closest('button, a, input, textarea, select, svg')) return;
+
+    this.pointerMoved = false;
+    this.dragging = false; // eşik aşılana kadar false
     this.activePointer = e.pointerId;
-    el.setPointerCapture(this.activePointer);
+    try { el.setPointerCapture(this.activePointer); } catch {}
+
     this.startX = e.clientX;
     this.startScrollLeft = el.scrollLeft;
     e.preventDefault();
   }
 
   dragMove(e: PointerEvent, el: HTMLElement) {
-    if (!this.dragging || e.pointerId !== this.activePointer) return;
+    if (this.activePointer == null || e.pointerId !== this.activePointer) return;
+
     const dx = e.clientX - this.startX;
-    el.scrollLeft = this.startScrollLeft - dx;
-    e.preventDefault();
+    if (Math.abs(dx) >= this.MOVE_THRESHOLD) {
+      this.pointerMoved = true;
+      this.dragging = true;
+    }
+
+    if (this.pointerMoved) {
+      el.scrollLeft = this.startScrollLeft - dx;
+      e.preventDefault();
+    }
   }
 
   dragEnd(el: HTMLElement) {
-    if (!this.dragging) return;
     if (this.activePointer != null) {
       try { el.releasePointerCapture(this.activePointer); } catch {}
       this.activePointer = undefined;
     }
-    this.dragging = false;
+    // bir sonraki tick'te click'e izin ver
+    setTimeout(() => (this.dragging = false), 0);
+  }
+
+  // ---- Sol/Sağ oklarla kaydırma ----
+  scrollCategory(catKey: DocCategory, amount: number) {
+    const container = document.querySelector<HTMLElement>(`[data-cat="${catKey}"]`);
+    if (container) {
+      container.scrollBy({ left: amount, behavior: 'smooth' });
+    }
   }
 }

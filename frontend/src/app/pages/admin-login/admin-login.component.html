@@ -1,55 +1,90 @@
 <div class="mx-auto max-w-md px-3 sm:px-4 mt-10 space-y-5">
 
-  <!-- Başlık bandı -->
-  <section class="rounded-2xl bg-gradient-to-r from-primary/15 via-secondary/10 to-accent/10
-                  p-5 border border-neutral-200 shadow-sm">
-    <h2 class="text-2xl font-extrabold tracking-tight text-neutral-900">Admin Giriş</h2>
-    <p class="mt-1 text-sm text-neutral-600">Yönetim paneline erişmek için oturum açın.</p>
+  <!-- Başlık paneli (surface-2, ikincil vurgu) -->
+  <section class="soft-card comic-outline p-6 surface-2">
+    <div class="flex items-center gap-2 -mt-1 mb-2">
+      <span
+        class="px-2 py-0.5 rounded-md text-xs font-medium"
+        style="
+          background-color: hsl(var(--s) / .12);
+          color: hsl(var(--s));
+          border: 1px solid hsl(var(--s) / .35);
+        ">
+        Admin
+      </span>
+    </div>
+
+    <h2
+      class="text-3xl leading-tight font-extrabold tracking-tight"
+      style="
+        background-image: linear-gradient(90deg, hsl(var(--p)), hsl(var(--s)));
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      ">
+      Admin Giriş
+    </h2>
+
+    <p class="mt-2 text-sm muted">
+      Yönetim paneline erişmek için oturum açın.
+    </p>
+
+    <div class="mt-4 h-px w-full"
+         style="background-image: linear-gradient(90deg, hsl(var(--a) / .0), hsl(var(--a) / .35), hsl(var(--a) / .0));">
+    </div>
   </section>
 
-  <div class="rounded-2xl bg-white/80 backdrop-blur border border-neutral-200 shadow-sm p-6">
+  <!-- Form paneli (surface-1, accent ayraç) -->
+  <div class="soft-card comic-outline p-6 surface-1">
     <div *ngIf="error" class="alert alert-error mb-4">{{ error }}</div>
 
-    <form (ngSubmit)="submit()" class="space-y-5">
+    <form (ngSubmit)="submit()" class="space-y-5" novalidate>
       <!-- Kullanıcı adı -->
-      <div class="form-control">
-        <label class="label"><span class="label-text">Kullanıcı adı</span></label>
-        <input
-          class="input input-bordered w-full"
-          name="u"
-          [(ngModel)]="username"
-          placeholder="Kullanıcı adı"
-          required />
+      <div>
+        <label class="label block mb-1">
+          <span class="label-soft text-sm">Kullanıcı adı</span>
+        </label>
+
+        <div class="relative">
+          <i class="pi pi-user absolute left-3 top-1/2 -translate-y-1/2"
+             style="color: hsl(var(--s)); opacity:.85"></i>
+
+          <input
+            class="input-soft pl-10"
+            name="u"
+            [(ngModel)]="username"
+            placeholder="Kullanıcı adı"
+            autocomplete="username"
+            required />
+        </div>
       </div>
 
       <!-- Şifre -->
-      <div class="form-control">
-        <label class="label"><span class="label-text">Şifre</span></label>
+      <div>
+        <label class="label block mb-1">
+          <span class="label-soft text-sm">Şifre</span>
+        </label>
+
         <div class="relative">
+          <i class="pi pi-lock absolute left-3 top-1/2 -translate-y-1/2"
+             style="color: hsl(var(--s)); opacity:.85"></i>
+
           <input
-            class="input input-bordered w-full pr-10"
+            class="input-soft pr-10 pl-10"
             [type]="showPass ? 'text' : 'password'"
             name="p"
             [(ngModel)]="password"
             placeholder="Şifre"
+            autocomplete="current-password"
             required />
-          <!-- göz butonu: odak bozulmasın diye mousedown'ı engelliyoruz -->
+
+          <!-- göz butonu -->
           <button
             type="button"
-            class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md text-neutral-600 hover:text-neutral-900 focus:outline-none"
+            class="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md focus:outline-none"
             (mousedown)="$event.preventDefault()"
             (click)="togglePass()"
-            aria-label="Şifreyi göster/gizle">
-            <svg *ngIf="!showPass" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-            </svg>
-            <svg *ngIf="showPass" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a10.05 10.05 0 012.782-4.362M6.223 6.223A9.963 9.963 0 0112 5c4.477 0 8.268 2.943 9.542 7a10.05 10.05 0 01-3.3 4.5M3 3l18 18M9.88 9.88A3 3 0 0014.12 14.12"/>
-            </svg>
+            aria-label="Şifreyi göster/gizle"
+            style="color: hsl(var(--bc) / .7)">
+            <i class="pi" [ngClass]="showPass ? 'pi-eye-slash' : 'pi-eye'"></i>
           </button>
         </div>
       </div>
@@ -58,15 +93,32 @@
       <div class="flex items-center justify-between pt-1">
         <label class="label cursor-pointer gap-2">
           <input type="checkbox" class="checkbox checkbox-sm" [(ngModel)]="remember" name="remember">
-          <span class="label-text text-sm">Beni hatırla</span>
+          <span class="label-soft text-sm">Beni hatırla</span>
         </label>
-        <a class="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-700">Şifremi unuttum</a>
+
+        <a class="text-sm hover:underline underline-offset-4"
+           style="color: hsl(var(--s));">
+          Şifremi unuttum
+        </a>
       </div>
 
-      <button class="btn btn-primary w-full" [disabled]="loading">
-        <span *ngIf="!loading">Giriş Yap</span>
+      <!-- Gönder butonu: primary→secondary gradyan -->
+      <button
+        class="btn w-full btn-primary-solid border-0"
+        [disabled]="loading" aria-label="Giriş Yap"
+        style="
+          background-image: linear-gradient(90deg, hsl(var(--p)), hsl(var(--s)));
+          color: hsl(var(--pc));
+        ">
+        <ng-container *ngIf="!loading">
+          <i class="pi pi-sign-in mr-2"></i>
+          Giriş Yap
+        </ng-container>
         <span *ngIf="loading" class="loading loading-spinner loading-sm"></span>
       </button>
     </form>
   </div>
+
+  <!-- alt dekoratif doku -->
+  <div class="bg-noise rounded-2xl h-6 opacity-60"></div>
 </div>
