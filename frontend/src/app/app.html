@@ -56,18 +56,6 @@
 
       <!-- Sağ: Tema + Auth (desktop) -->
       <div class="hidden md:flex items-center gap-2">
-        <!-- Tema toggle -->
-        <button class="btn btn-ghost btn-sm" (click)="theme.toggle()" aria-label="Temayı değiştir">
-          <!-- Güneş -->
-          <svg *ngIf="!isDark" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.79 1.8-1.79zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zm9-10v-2h3v2h-3zm-2.24-8.16l1.8-1.79 1.79 1.79-1.79 1.79-1.8-1.79zM12 5a7 7 0 100 14 7 7 0 000-14z"/>
-          </svg>
-          <!-- Ay -->
-          <svg *ngIf="isDark" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.742 13.045A8.5 8.5 0 1110.955 3.258 7 7 0 0020.742 13.045z"/>
-          </svg>
-        </button>
-
         <a *ngIf="!auth.isLoggedIn()" routerLink="/admin/login" class="btn btn-sm btn-outline">Giriş</a>
         <button *ngIf="auth.isLoggedIn()" (click)="logout()" class="btn btn-sm btn-outline btn-error">Çıkış</button>
       </div>
@@ -122,13 +110,6 @@
         </ng-container>
 
         <!-- Tema toggle (mobil) -->
-        <div class="mt-2 flex items-center justify-between px-3 py-2 rounded hover:bg-neutral-100">
-          <span class="text-sm text-neutral-600">Tema</span>
-          <button class="btn btn-sm" (click)="theme.toggle()">
-            <span *ngIf="!isDark">Koyu</span>
-            <span *ngIf="isDark">Açık</span>
-          </button>
-        </div>
 
         <div class="mt-auto pt-2">
           <ng-container *ngIf="!auth.isLoggedIn(); else logged">
