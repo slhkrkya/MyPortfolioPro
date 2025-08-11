@@ -1,42 +1,65 @@
 <!doctype html>
-<html lang="tr" data-theme="portfolio-light">
+<html lang="tr" class="preload">
 <head>
   <meta charset="utf-8">
   <title>Frontend</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- Tema: ilk yükleme -->
+  <!-- İlk boyamada geçişleri kapat -->
+  <style>
+    /* yalnızca ilk boyamada (html.preload) tüm transition'ları kapat */
+    html.preload *, html.preload *::before, html.preload *::after {
+      transition: none !important;
+    }
+  </style>
+
+  <!-- Tema: en erken aşamada uygula -->
   <script>
     (function() {
       const KEY = 'theme';
       const root = document.documentElement;
-      try {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const saved = localStorage.getItem(KEY);
-        const initial = (saved === 'portfolio-light' || saved === 'portfolio-dark')
-          ? saved
-          : (prefersDark ? 'portfolio-dark' : 'portfolio-light');
-        root.setAttribute('data-theme', initial);
 
-        window.__setTheme = function(t) {
-          root.classList.add('theme-switching');
-          root.setAttribute('data-theme', t);
-          localStorage.setItem(KEY, t);
-          setTimeout(() => root.classList.remove('theme-switching'), 300);
-        };
-        window.__toggleTheme = function() {
-          const cur = root.getAttribute('data-theme');
-          __setTheme(cur === 'portfolio-dark' ? 'portfolio-light' : 'portfolio-dark');
-        };
+      // OS tema medyası ve eski Safari fallback'i
+      const mql = window.matchMedia('(prefers-color-scheme: dark)');
+      const onOSChange = function(e) {
+        if (!localStorage.getItem(KEY)) {
+          __setTheme(e.matches ? 'portfolio-dark' : 'portfolio-light');
+        }
+      };
+      if (mql.addEventListener) mql.addEventListener('change', onOSChange);
+      else if (mql.addListener) mql.addListener(onOSChange); // Safari <14
 
-        // OS teması değişirse ve kullanıcı elle seçim yapmadıysa otomatik güncelle
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          if (!localStorage.getItem(KEY)) {
-            __setTheme(e.matches ? 'portfolio-dark' : 'portfolio-light');
-          }
+      // Başlangıç temasını belirle ve uygula
+      const saved = localStorage.getItem(KEY);
+      const prefersDark = mql.matches;
+      const initial = (saved === 'portfolio-light' || saved === 'portfolio-dark')
+        ? saved
+        : (prefersDark ? 'portfolio-dark' : 'portfolio-light');
+
+      // Not: burada data-theme'yi doğrudan veriyoruz ki CSS yüklenmeden önce aktif olsun
+      root.setAttribute('data-theme', initial);
+
+      // Tema değiştirme yardımcıları (manuel geçişlerde küçük animasyon)
+      window.__setTheme = function(t) {
+        root.classList.add('theme-switching');
+        root.setAttribute('data-theme', t);
+        localStorage.setItem(KEY, t);
+        setTimeout(() => root.classList.remove('theme-switching'), 300);
+      };
+      window.__toggleTheme = function() {
+        const cur = root.getAttribute('data-theme');
+        __setTheme(cur === 'portfolio-dark' ? 'portfolio-light' : 'portfolio-dark');
+      };
+
+      // İlk boyamadan sonra preload sınıfını kaldır (flash'ı tamamen önler)
+      // çift rAF: style/layout flush sonrası sorunsuz kaldırma
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          root.classList.remove('preload');
         });
-      } catch (e) { /* sessizce geç */ }
+      });
     })();
   </script>
 
@@ -45,12 +68,10 @@
 <body>
   <app-root></app-root>
 
-  <!-- (İsteğe bağlı) Standalone toggle butonu örneği:
+  <!-- (İsteğe bağlı) Standalone toggle butonu:
   <button class="btn btn-ghost rounded-full fixed bottom-4 right-4 shadow"
           onclick="window.__toggleTheme()" aria-label="Tema değiştir">
-    <i class="pi pi-sun dark:hidden"></i>
-    <i class="pi pi-moon hidden dark:inline"></i>
-    <span class="ml-2">Tema</span>
+    <i class="pi pi-sun"></i>
   </button>
   -->
 </body>

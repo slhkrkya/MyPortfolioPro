@@ -19,6 +19,30 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
 
+/* === Autofill (Chrome/Edge/Firefox) – tema uyumlu === */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  /* arka planı temanın bg rengine boya */
+  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset !important;
+  -webkit-text-fill-color: hsl(var(--bc)) !important;
+  caret-color: hsl(var(--bc)) !important;
+  /* mavi animasyonu bastır */
+  transition: background-color 9999s ease-out 0s, color 9999s ease-out 0s;
+}
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus {
+  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset !important;
+}
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset !important;
+  -moz-text-fill-color: hsl(var(--bc)) !important;
+  caret-color: hsl(var(--bc)) !important;
+}
+
 /* === 4) Doku & Scrollbar (tema uyumlu) === */
 .bg-noise{
   background-image: radial-gradient(hsl(var(--bc) / 0.12) 1px, transparent 1px);
@@ -216,5 +240,4 @@ html.theme-switching {
   .click-outside-backdrop { position: fixed; inset: 0; z-index: 50; }
 
   .nav-link { transition: color .2s ease, background-color .2s ease; }
-  
 }
