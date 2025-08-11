@@ -1,17 +1,20 @@
 <!-- APP SHELL -->
-<div class="relative min-h-screen bg-base-200 overflow-x-hidden">
-  <!-- Hafif doku -->
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 opacity-[0.05] bg-noise"></div>
+<div class="flex min-h-dvh flex-col relative overflow-x-hidden bg-neutral-50">
+  <!-- Hafif doku (layout dışında) -->
+  <div aria-hidden="true"
+       class="pointer-events-none fixed inset-0 -z-30 opacity-[0.05] bg-noise"></div>
 
-  <!-- Gradient bloblar -->
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+  <!-- Gradient bloblar (layout dışında) -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-40">
     <div class="absolute -top-24 -left-24 h-[520px] w-[520px] rounded-full bg-primary/10 blur-3xl"></div>
     <div class="absolute -top-32 right-[-8rem] h-[460px] w-[460px] rounded-full bg-secondary/10 blur-3xl"></div>
-    <div class="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 h-[380px] w-[680px] rounded-[48%] bg-accent/10 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4
+                h-[380px] w-[680px] rounded-[48%] bg-accent/10 blur-3xl"></div>
   </div>
 
-  <!-- NAVBAR -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-neutral-200">
+  <!-- NAVBAR (fixed) -->
+  <nav
+    class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-neutral-200">
     <div class="mx-auto max-w-6xl px-3 sm:px-4 h-14 flex items-center justify-between">
       <!-- Logo -->
       <a routerLink="/" class="text-lg font-extrabold tracking-tight text-neutral-900">MyPortfolio</a>
@@ -54,7 +57,7 @@
         </div>
       </div>
 
-      <!-- Sağ: Tema + Auth (desktop) -->
+      <!-- Sağ: Auth (desktop) -->
       <div class="hidden md:flex items-center gap-2">
         <a *ngIf="!auth.isLoggedIn()" routerLink="/admin/login" class="btn btn-sm btn-outline">Giriş</a>
         <button *ngIf="auth.isLoggedIn()" (click)="logout()" class="btn btn-sm btn-outline btn-error">Çıkış</button>
@@ -109,8 +112,6 @@
           <a routerLink="/admin/profile"      (click)="mobileOpen=false" [routerLinkActive]="['text-blue-700','font-semibold']" class="px-3 py-2 rounded hover:bg-neutral-100">Profil Düzenle</a>
         </ng-container>
 
-        <!-- Tema toggle (mobil) -->
-
         <div class="mt-auto pt-2">
           <ng-container *ngIf="!auth.isLoggedIn(); else logged">
             <a routerLink="/admin/login" (click)="mobileOpen=false" class="btn btn-primary w-full">Giriş</a>
@@ -123,15 +124,28 @@
     </div>
   </div>
 
-  <!-- CONTENT -->
-  <main class="relative z-10 pt-14 md:pt-16 pb-24 md:pb-28 lg:pb-32">
+  <!-- CONTENT (kalan alanı doldurur) -->
+  <main class="flex-1 relative z-10 pt-14 md:pt-16">
     <p-toast
       position="top-right"
       appendTo="body"
       [baseZIndex]="9999"
       [preventOpenDuplicates]="true"
-      [style]="{ top: '72px' }" 
-    ></p-toast>
+      [style]="{ top: '72px' }">
+    </p-toast>
+
     <router-outlet></router-outlet>
   </main>
+
+  <!-- FOOTER (her zaman en altta) -->
+  <footer class="border-t border-neutral-200 bg-white/70 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-3 sm:px-4 py-6
+                flex flex-col sm:flex-row items-center sm:justify-between gap-3">
+      <p class="text-xs text-neutral-500 text-center sm:text-left">
+        © {{ currentYear }}
+        <span class="font-medium text-neutral-700">Salih Karakaya</span>
+        — kişisel portfolyo.
+      </p>
+    </div>
+  </footer>
 </div>

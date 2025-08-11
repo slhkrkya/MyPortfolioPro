@@ -18,6 +18,7 @@ export class App {
   private router = inject(Router);
   theme = inject(ThemeService);
   mobileOpen = false;
+  get currentYear() { return new Date().getFullYear(); }
 
   logout() {
     this.auth.logout();          // token'ı temizle

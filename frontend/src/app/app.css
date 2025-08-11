@@ -1,3 +1,16 @@
-body {
-  background-color:#f8fafc;
+/* Sticky footer iskeleti */
+html, body { height: 100%; }
+body { margin: 0; }
+
+/* app-root'un içini flex sütun */
+app-root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
+/* router-outlet'i saran <main> kalan alanı doldursun */
+main { flex: 1 1 auto; display: block; }
+
+/* footer küçülmesin (altta kalsın) */
+footer { flex-shrink: 0; }
