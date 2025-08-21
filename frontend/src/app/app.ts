@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet, NavigationEnd } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
@@ -9,7 +9,7 @@ import { ThemeService } from './shared/services/theme.service';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-type ThemeMode = 'light' | 'dark';
+type ThemeMode = 'light' | 'dark' | 'system';
 
 @Component({
   selector: 'app-root',
@@ -18,10 +18,10 @@ type ThemeMode = 'light' | 'dark';
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
 })
-export class App implements OnInit, OnDestroy {
+export class App implements OnInit, AfterViewInit, OnDestroy {
   title = 'frontend';
 
-  // services (inject API)
+  // services
   private router = inject(Router);
   auth = inject(AuthService);
   theme = inject(ThemeService);
@@ -35,21 +35,36 @@ export class App implements OnInit, OnDestroy {
 
   // computed
   get currentYear() { return new Date().getFullYear(); }
-  get currentTheme(): ThemeMode { return this.theme['mode'] as ThemeMode; }
+
+  get currentTheme(): ThemeMode {
+    return this.theme.current;
+  }
+
+  /** isDark: ThemeService 'system' ise OS tercihine bakar */
   get isDark(): boolean {
-    // ThemeService 'dark' modunu baz alıyoruz (OS tercihini ayrıca kullanmıyoruz)
+    if (this.currentTheme === 'system') {
+      return window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false;
+    }
     return this.currentTheme === 'dark';
   }
 
   // lifecycle
   ngOnInit(): void {
-    // route değişmelerinde admin menüsünü kapat
+    // route değişince admin menüsünü kapat
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
         takeUntil(this.destroy$)
       )
       .subscribe(() => (this.adminOpen = false));
+
+    // ilk state
+    this.updateSkyShift();
+  }
+
+  ngAfterViewInit(): void {
+    // İlk yüklemede scroll değişkenini yaz (arka plan başlangıcı doğru görünsün)
+    this.onScroll();
   }
 
   ngOnDestroy(): void {
@@ -64,6 +79,23 @@ export class App implements OnInit, OnDestroy {
     this.mobileOpen = false;
   }
 
+  private updateSkyShift() {
+    const doc = document.documentElement;
+    const body = document.body;
+    const scrollTop = doc.scrollTop || body.scrollTop || 0;
+    const scrollHeight = (doc.scrollHeight || body.scrollHeight || 1) - doc.clientHeight;
+    const progress = Math.max(0, Math.min(1, scrollHeight ? scrollTop / scrollHeight : 0));
+    doc.style.setProperty('--sky-shift', String(progress));
+  }
+
+  @HostListener('window:scroll')
+  onScroll() {
+    const doc = document.documentElement;
+    const max = Math.max(1, (doc.scrollHeight - doc.clientHeight));
+    const p = Math.min(1, Math.max(0, window.scrollY / max));
+    doc.style.setProperty('--sky-shift', p.toFixed(3));
+  }
+
   // actions
   logout() {
     this.auth.logout();
@@ -74,8 +106,10 @@ export class App implements OnInit, OnDestroy {
     return this.router.url.startsWith('/admin');
   }
 
-  setTheme(mode: ThemeMode) {
+  /** Tema değiştir: ThemeService'e devrediyoruz. */
+  setTheme(mode: 'light' | 'dark') {
     this.theme.set(mode);
+    requestAnimationFrame(() => this.onScroll());
   }
 
   toggleMobile() {

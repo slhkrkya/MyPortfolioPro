@@ -15,19 +15,23 @@ export class CvUploadComponent {
   fileName = '';
   file: File | null = null;
   uploadSuccess = false;
+  loading = false;
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.file = input.files[0];
+
+      // İsim boşsa dosya adından otomatik doldur (uzantısız)
       if (!this.fileName) {
-        // Dosya adını otomatik doldur (uzantısız)
-        this.fileName = this.file.name.split('.').slice(0, -1).join('.');
+        const parts = this.file.name.split('.');
+        parts.pop();
+        this.fileName = parts.join('.') || this.file.name;
       }
     }
   }
 
-  uploadFile() {
+  async uploadFile() {
     if (!this.file || !this.fileName.trim()) {
       alert('Lütfen belge adı ve dosya seçin.');
       return;
@@ -35,18 +39,24 @@ export class CvUploadComponent {
 
     const formData = new FormData();
     formData.append('file', this.file);
-    formData.append('fileName', this.fileName);
+    formData.append('fileName', this.fileName.trim());
 
-    this.http.post('http://localhost:5291/api/documents', formData).subscribe({
-      next: () => {
-        this.uploadSuccess = true;
-        alert('Belge başarıyla yüklendi!');
-        this.file = null;
-        this.fileName = '';
-      },
-      error: () => {
-        alert('Yükleme sırasında hata oluştu.');
-      }
-    });
+    try {
+      this.loading = true;
+
+      // ÖNEMLİ: Sabit localhost yok. Relative endpoint.
+      // Interceptor bunu /api/documents olarak tamamlayacak.
+      await this.http.post('/documents', formData).toPromise();
+
+      this.uploadSuccess = true;
+      alert('Belge başarıyla yüklendi!');
+      this.file = null;
+      this.fileName = '';
+    } catch (err) {
+      alert('Yükleme sırasında hata oluştu.');
+      this.uploadSuccess = false;
+    } finally {
+      this.loading = false;
+    }
   }
 }

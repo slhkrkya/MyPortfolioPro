@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   private http = inject(HttpClient);
-  private api = `${environment.apiBaseUrl}/api/projects`; 
+  private api = `${environment.apiBaseUrl}/projects`; 
 
   getAll(): Observable<Project[]> {
     return this.http.get<Project[]>(this.api);

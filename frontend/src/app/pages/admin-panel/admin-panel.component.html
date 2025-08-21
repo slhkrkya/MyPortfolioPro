@@ -1,1 +1,106 @@
-<p>admin-panel works!</p>
+<div class="mx-auto max-w-6xl px-3 sm:px-4 py-6 space-y-6">
+
+  <!-- Başlık şeridi -->
+  <section class="soft-card comic-outline p-5 md:p-6 flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight heading-gradient">
+        Admin İşlemleri
+      </h1>
+      <p class="mt-1 text-sm muted">
+        Proje ekleyin, belgeleri yönetin ve profilinizi güncelleyin.
+      </p>
+      <div class="mt-3 h-px w-full"
+           style="background-image:linear-gradient(90deg,hsl(var(--a)/0),hsl(var(--a)/.35),hsl(var(--a)/0));">
+      </div>
+    </div>
+
+    <!-- Hızlı butonlar (pill) -->
+    <div class="flex items-center gap-2">
+      <a routerLink="/projects" class="inline-flex items-center gap-2 h-9 px-4 rounded-full ring-1 border-0 text-sm" style="color:hsl(var(--s)); ring-color:hsl(var(--s));">
+        <i class="pi pi-grid text-base"></i><span class="leading-none">Projeler</span>
+      </a>
+      <a routerLink="/documents"
+         class="inline-flex items-center gap-2 h-9 px-4 rounded-full ring-1 ring-base-300 border-0 shadow-inner btn-primary-solid text-sm">
+        <i class="pi pi-file text-base"></i><span class="leading-none">Belgeler</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Kısayol kartları -->
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <!-- Proje Ekle -->
+    <a routerLink="/admin/project-form" class="soft-card comic-outline surface-1 p-5 group relative overflow-hidden">
+      <div aria-hidden="true"
+           class="pointer-events-none absolute -inset-1 opacity-0 group-hover:opacity-100 transition
+                  bg-[radial-gradient(80%_100%_at_100%_0%,hsl(var(--s)/.18),transparent_60%)]"></div>
+      <div class="relative z-10 flex items-start gap-3">
+        <div class="h-11 w-11 rounded-xl flex items-center justify-center ring-1 ring-base-300 shadow-inner"
+             style="background:linear-gradient(135deg,hsl(var(--s)),hsl(var(--p))); color:hsl(var(--pc));">
+          <i class="pi pi-plus text-lg"></i>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-base-content">Proje Ekle</h3>
+          <p class="muted text-sm mt-0.5">Yeni bir projenizi ekleyin ve portföyü güncel tutun.</p>
+        </div>
+      </div>
+    </a>
+
+    <!-- Belge Yükle -->
+    <a routerLink="/admin/cv-upload" class="soft-card comic-outline surface-1 p-5 group relative overflow-hidden">
+      <div aria-hidden="true"
+           class="pointer-events-none absolute -inset-1 opacity-0 group-hover:opacity-100 transition
+                  bg-[radial-gradient(80%_100%_at_100%_0%,hsl(var(--a)/.18),transparent_60%)]"></div>
+      <div class="relative z-10 flex items-start gap-3">
+        <div class="h-11 w-11 rounded-xl flex items-center justify-center ring-1 ring-base-300 shadow-inner"
+             style="background:linear-gradient(135deg,hsl(var(--a)),hsl(var(--s))); color:#fff;">
+          <i class="pi pi-upload text-lg"></i>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-base-content">Belge Yükle</h3>
+          <p class="muted text-sm mt-0.5">CV, sertifika veya raporlarınızı yükleyin.</p>
+        </div>
+      </div>
+    </a>
+
+    <!-- Profil Düzenle -->
+    <a routerLink="/admin/profile" class="soft-card comic-outline surface-1 p-5 group relative overflow-hidden">
+      <div aria-hidden="true"
+           class="pointer-events-none absolute -inset-1 opacity-0 group-hover:opacity-100 transition
+                  bg-[radial-gradient(80%_100%_at_100%_0%,hsl(var(--p)/.18),transparent_60%)]"></div>
+      <div class="relative z-10 flex items-start gap-3">
+        <div class="h-11 w-11 rounded-xl flex items-center justify-center ring-1 ring-base-300 shadow-inner"
+             style="background:linear-gradient(135deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc));">
+          <i class="pi pi-user-edit text-lg"></i>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-base-content">Profil Düzenle</h3>
+          <p class="muted text-sm mt-0.5">İsim, özet ve sosyal bağlantıları güncelleyin.</p>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <!-- İkinci sıra: liste sayfalarına kısayol -->
+  <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+    <a routerLink="/projects" class="soft-card surface-1 p-4 hover:-translate-y-0.5 transition">
+      <div class="flex items-center gap-3">
+        <i class="pi pi-list text-xl" style="color:hsl(var(--s));"></i>
+        <div>
+          <h4 class="font-medium">Projeleri Yönet</h4>
+          <p class="muted text-sm">Var olan projeleri görüntüle/sil.</p>
+        </div>
+      </div>
+    </a>
+
+    <a routerLink="/documents" class="soft-card surface-1 p-4 hover:-translate-y-0.5 transition">
+      <div class="flex items-center gap-3">
+        <i class="pi pi-folder text-xl" style="color:hsl(var(--p));"></i>
+        <div>
+          <h4 class="font-medium">Belgeleri Yönet</h4>
+          <p class="muted text-sm">Önizle, indir, kaldır.</p>
+        </div>
+      </div>
+    </a>
+  </section>
+
+</div>

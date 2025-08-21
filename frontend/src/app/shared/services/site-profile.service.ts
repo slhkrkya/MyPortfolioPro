@@ -7,7 +7,7 @@ import { SiteProfile } from '../models/site-profile.model';
 @Injectable({ providedIn: 'root' })
 export class SiteProfileService {
   private http = inject(HttpClient);
-  private api = `${environment.apiBaseUrl}/api/siteprofile`;
+  private api = `${environment.apiBaseUrl}/siteprofile`;
 
   get(): Observable<SiteProfile> {
     return this.http.get<SiteProfile>(this.api);

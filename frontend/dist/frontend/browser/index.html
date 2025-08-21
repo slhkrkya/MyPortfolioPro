@@ -1,57 +1,71 @@
 <!doctype html>
-<html lang="tr" data-theme="portfolio-light" data-beasties-container>
+<html lang="tr" class="preload" data-beasties-container>
 <head>
   <meta charset="utf-8">
-  <title>Frontend</title>
+  <title>Salih Karakaya</title>  <title>Salih Karakaya</title>
+  <meta name="description" content="Salih Karakaya | Kişisel portfolyo ve projeler.">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
 
-  <!-- Tema: ilk yükleme -->
+  <!-- İlk boyamada geçişleri kapat -->
+  <style>
+    /* yalnızca ilk boyamada (html.preload) tüm transition'ları kapat */
+    html.preload *, html.preload *::before, html.preload *::after {
+      transition: none !important;
+    }
+  </style>
+
+  <!-- Tema: en erken aşamada uygula -->
   <script>
     (function() {
       const KEY = 'theme';
       const root = document.documentElement;
-      try {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const saved = localStorage.getItem(KEY);
-        const initial = (saved === 'portfolio-light' || saved === 'portfolio-dark')
-          ? saved
-          : (prefersDark ? 'portfolio-dark' : 'portfolio-light');
-        root.setAttribute('data-theme', initial);
 
-        window.__setTheme = function(t) {
-          root.classList.add('theme-switching');
-          root.setAttribute('data-theme', t);
-          localStorage.setItem(KEY, t);
-          setTimeout(() => root.classList.remove('theme-switching'), 300);
-        };
-        window.__toggleTheme = function() {
-          const cur = root.getAttribute('data-theme');
-          __setTheme(cur === 'portfolio-dark' ? 'portfolio-light' : 'portfolio-dark');
-        };
+      // OS tema medyası ve eski Safari fallback'i
+      const mql = window.matchMedia('(prefers-color-scheme: dark)');
+      const onOSChange = function(e) {
+        if (!localStorage.getItem(KEY)) {
+          __setTheme(e.matches ? 'portfolio-dark' : 'portfolio-light');
+        }
+      };
+      if (mql.addEventListener) mql.addEventListener('change', onOSChange);
+      else if (mql.addListener) mql.addListener(onOSChange); // Safari <14
 
-        // OS teması değişirse ve kullanıcı elle seçim yapmadıysa otomatik güncelle
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          if (!localStorage.getItem(KEY)) {
-            __setTheme(e.matches ? 'portfolio-dark' : 'portfolio-light');
-          }
+      // Başlangıç temasını belirle ve uygula
+      const saved = localStorage.getItem(KEY);
+      const prefersDark = mql.matches;
+      const initial = (saved === 'portfolio-light' || saved === 'portfolio-dark')
+        ? saved
+        : (prefersDark ? 'portfolio-dark' : 'portfolio-light');
+
+      // Not: burada data-theme'yi doğrudan veriyoruz ki CSS yüklenmeden önce aktif olsun
+      root.setAttribute('data-theme', initial);
+
+      // Tema değiştirme yardımcıları (manuel geçişlerde küçük animasyon)
+      window.__setTheme = function(t) {
+        root.classList.add('theme-switching');
+        root.setAttribute('data-theme', t);
+        localStorage.setItem(KEY, t);
+        setTimeout(() => root.classList.remove('theme-switching'), 300);
+      };
+      window.__toggleTheme = function() {
+        const cur = root.getAttribute('data-theme');
+        __setTheme(cur === 'portfolio-dark' ? 'portfolio-light' : 'portfolio-dark');
+      };
+
+      // İlk boyamadan sonra preload sınıfını kaldır (flash'ı tamamen önler)
+      // çift rAF: style/layout flush sonrası sorunsuz kaldırma
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          root.classList.remove('preload');
         });
-      } catch (e) { /* sessizce geç */ }
+      });
     })();
   </script>
-
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-<style>*,:before,:after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}html,body{height:100%}*{transition:color .25s ease,background-color .25s ease,border-color .25s ease}@media (prefers-reduced-motion: reduce){*{transition:none!important}}html,body{scrollbar-width:thin;scrollbar-color:hsl(var(--bc) / .28) transparent}body::-webkit-scrollbar{width:10px;height:10px}body::-webkit-scrollbar-track{background:transparent}body::-webkit-scrollbar-thumb{background:hsl(var(--bc) / .28);border-radius:9999px;border:2px solid transparent;background-clip:padding-box;-webkit-transition:background-color .2s ease,box-shadow .2s ease;transition:background-color .2s ease,box-shadow .2s ease}body::-webkit-scrollbar-thumb:hover{background:hsl(var(--bc) / .4)}body::-webkit-scrollbar-thumb:active{background:linear-gradient(90deg,hsl(var(--p) / .7),hsl(var(--s) / .7))}body{overflow-x:clip}body{background:radial-gradient(1200px 600px at 20% -10%,hsl(var(--p) / .06),transparent 70%),radial-gradient(1200px 600px at 80% -20%,hsl(var(--s) / .06),transparent 70%),linear-gradient(180deg,hsl(var(--b1)),hsl(var(--b2)));color:hsl(var(--bc))}</style><link rel="stylesheet" href="styles-4E23EL2T.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-4E23EL2T.css"></noscript></head>
+<style>*,:before,:after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}html,body{height:100%;background:transparent}*{transition:color .25s ease,background-color .25s ease,border-color .25s ease}@media (prefers-reduced-motion: reduce){*{transition:none!important}}html,body{scrollbar-width:thin;scrollbar-color:hsl(var(--bc) / .28) transparent}body{color:hsl(var(--bc))}:root{--scene-trans-dur:1.2s;--scene-trans-ease:ease-in-out}:root{--sky-shift:0;--cloud1-y:-60px;--cloud2-y:-20px}:root{--sky-fade-dur:2.4s;--sky-fade-ease:cubic-bezier(.22,.61,.36,1)}:root{--stars-dur:1.1s;--stars-ease:ease-in-out;--stars-delay-base:0ms;--stars-delay-b:.12s;--stars-delay-a:.24s}</style><link rel="stylesheet" href="styles-3PRSXL7P.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-3PRSXL7P.css"></noscript></head>
 <body>
   <app-root></app-root>
-
-  <!-- (İsteğe bağlı) Standalone toggle butonu örneği:
-  <button class="btn btn-ghost rounded-full fixed bottom-4 right-4 shadow"
-          onclick="window.__toggleTheme()" aria-label="Tema değiştir">
-    <i class="pi pi-sun dark:hidden"></i>
-    <i class="pi pi-moon hidden dark:inline"></i>
-    <span class="ml-2">Tema</span>
-  </button>
-  -->
-<script src="main-UVS72XW2.js" type="module"></script></body>
+<script src="main-NEMO5Z7I.js" type="module"></script></body>
 </html>

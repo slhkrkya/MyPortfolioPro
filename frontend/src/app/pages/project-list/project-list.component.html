@@ -4,24 +4,25 @@
   <section class="soft-card comic-outline surface-2 p-6 md:p-8 mb-5">
     <div class="flex items-center justify-between gap-3">
       <div>
-        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight"
-            style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s)),hsl(var(--a)));
-                   -webkit-background-clip:text;background-clip:text;color:transparent;">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight heading-gradient">
           Projeler
         </h2>
         <p class="mt-1 muted">GitHub projelerime buradan ulaşabilirsiniz</p>
+        <div class="mt-4 h-px w-full"
+          style="background-image:linear-gradient(90deg, hsl(var(--a) / 0), hsl(var(--a) / .35), hsl(var(--a) / 0));">
+        </div>
       </div>
 
       <!-- sadece admin -->
       <div class="hidden sm:flex gap-2" *ngIf="auth.isAdmin()">
         <a routerLink="/admin/project-form"
-          class="btn btn-sm md:btn-md border-0 rounded-full px-4"
-          style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc)); box-shadow:0 4px 8px hsl(var(--p)/.25)">
+          class="btn btn-sm md:btn-md border-0 rounded-full px-4 btn-primary-solid"
+          style="box-shadow:0 4px 8px hsl(var(--p)/.25)">
           <i class="pi pi-plus mr-2"></i>Manuel Ekle
         </a>
         <button (click)="importGitHub()"
-                class="btn btn-sm md:btn-md border-0 rounded-full px-4"
-                style="background-image:linear-gradient(90deg,hsl(var(--s)),hsl(var(--a))); color:hsl(var(--sc)); box-shadow:0 4px 8px hsl(var(--s)/.25)">
+                class="btn btn-sm md:btn-md border-0 rounded-full px-4 btn-secondary-solid"
+                style="box-shadow:0 4px 8px hsl(var(--s)/.25)">
           <i class="pi pi-github mr-2"></i>GitHub’dan İçe Aktar
         </button>
       </div>
@@ -31,13 +32,11 @@
   <!-- Mobil admin -->
   <div class="sm:hidden mb-4 flex gap-2" *ngIf="auth.isAdmin()">
     <a routerLink="/admin/project-form"
-       class="btn btn-sm flex-1 border-0"
-       style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc));">
+       class="btn btn-sm flex-1 border-0 btn-primary-solid">
        <i class="pi pi-plus mr-2"></i>Manuel Ekle
     </a>
     <button (click)="importGitHub()"
-       class="btn btn-sm flex-1 border-0"
-       style="background-image:linear-gradient(90deg,hsl(var(--s)),hsl(var(--a))); color:hsl(var(--sc));">
+       class="btn btn-sm flex-1 border-0 btn-secondary-solid">
        <i class="pi pi-github mr-2"></i>İçe Aktar
     </button>
   </div>
@@ -58,7 +57,7 @@
   <div *ngIf="!loading && projects.length > 0"
        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
     <div *ngFor="let p of projects"
-         class="soft-card surface-1 comic-outline hover:-translate-y-0.5 hover:shadow-lg transition">
+         class="soft-card comic-outline transition">
 
       <div class="p-4">
         <div class="flex items-start gap-3">
@@ -71,9 +70,8 @@
               <h3 class="font-semibold text-lg leading-tight line-clamp-2">{{ p.title }}</h3>
               <button *ngIf="auth.isAdmin()"
                       (click)="deleteProject(p.id)"
-                      class="btn btn-xs border-0"
-                      style="background-color:hsl(var(--er)/.15); color:hsl(var(--er));">
-                <i class="pi pi-trash"></i>
+                      class="border-0 p-1 text-red-600 hover:text-red-700 transition-transform duration-200 hover:scale-110">
+                <i class="pi pi-trash text-lg"></i>
               </button>
             </div>
 

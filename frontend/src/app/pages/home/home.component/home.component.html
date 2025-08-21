@@ -1,71 +1,76 @@
 <!-- HERO / Hakkımda + Balon CTA'lar -->
-<section *ngIf="!loading && profile" class="mt-6 flex flex-wrap justify-center gap-4 px-4 py-2">
-  <div class="grid items-start gap-8">
-    <!-- Sol içerik -->
-    <div>
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight"
-          style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s)),hsl(var(--a)));
-                 -webkit-background-clip:text;background-clip:text;color:transparent;">
+<section *ngIf="!loading && profile"
+         class="mx-auto max-w-6xl px-4 md:px-6 pt-10 md:pt-14">
+  <!-- Yumuşak kart ve arka plan vurgusu -->
+  <div class="soft-card surface-2 comic-outline p-6 md:p-8"
+     style="background-color:hsl(var(--b1) / 0.15); border:1px solid hsl(var(--b3) / 0.35);">
+    <!-- Başlık + alt ayraç -->
+    <header>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight heading-gradient">
         {{ profile.fullName || '—' }}
       </h1>
-
       <p class="mt-2 muted">
         {{ profile.tagline || 'Kısa açıklama henüz girilmemiş.' }}
       </p>
 
-      <ul *ngIf="aboutList.length" class="mt-4 space-y-2 pl-5">
+      <!-- ince accent ayraç -->
+      <div class="mt-4 h-px w-full divider-accent">
+      </div>
+    </header>
+
+    <!-- İçerik -->
+    <div class="mt-4">
+      <!-- Madde madde -->
+      <ul *ngIf="aboutList.length" class="space-y-2 pl-5">
         <li *ngFor="let item of aboutList; let i = index; trackBy: trackByIndex"
-            class="text-base-content/90"
-            style="list-style: disc;">
+            class="text-base-content/90 list-disc">
           {{ item }}
         </li>
       </ul>
 
-      <!-- YATAY BALON CTA’LAR -->
-      <div class="mt-5 flex flex-wrap items-stretch gap-2">
+      <!-- CTA Balonları -->
+      <div class="mt-5 flex flex-wrap items-center gap-2">
         <!-- Belgeler (gradient pill) -->
         <a routerLink="/documents"
-           class="inline-flex items-center gap-2 h-9 px-4 rounded-full
+          class="inline-flex items-center gap-2 h-9 px-4 rounded-full
                   ring-1 ring-base-300 shadow-inner border-0 btn-primary-solid
-                  text-sm"
-           style="background-image:linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color:hsl(var(--pc));">
+                  text-sm">
           <i class="pi pi-file text-base"></i>
           <span class="leading-none">CV &amp; Belgelerimi Gör</span>
         </a>
 
-        <!-- Projeler (secondary outline pill) -->
+        <!-- Projeler (secondary outline pill – NET görünsün) -->
         <a routerLink="/projects"
-           class="inline-flex items-center gap-2 h-9 px-4 rounded-full
-                  ring-1 border-0 text-sm"
-           style="color:hsl(var(--s)); ring-color:hsl(var(--s));">
+          class="inline-flex items-center gap-2 h-9 px-4 rounded-full
+                  ring-2 ring-offset-0 border-0 text-sm
+                  bg-white/30 backdrop-blur hover:bg-white/50
+                  transition-colors"
+          style="--tw-ring-color: hsl(var(--s)); color: hsl(var(--s));">
           <i class="pi pi-grid text-base"></i>
-          <span class="leading-none">Projelerim</span>
+          <span class="leading-none font-semibold">Projelerim</span>
         </a>
 
         <!-- İletişim (accent solid pill) -->
         <a routerLink="/contact"
-           class="inline-flex items-center gap-2 h-9 px-4 rounded-full
-                  ring-1 ring-base-300 border-0 shadow-inner text-sm"
-           style="background-color:hsl(var(--a)); color:hsl(var(--ac));">
+          class="inline-flex items-center gap-2 h-9 px-4 rounded-full
+                  ring-1 ring-base-300 border-0 shadow-inner text-sm btn-accent-solid">
           <i class="pi pi-send text-base"></i>
           <span class="leading-none">İletişim</span>
         </a>
       </div>
 
-      <!-- Sosyaller -->
-      <div *ngIf="social.length" class="mt-4 flex flex-wrap gap-3">
+      <!-- Sosyaller – tema metin rengine çekildi, hover’da güçlenir -->
+      <div *ngIf="social.length" class="mt-5 flex flex-wrap gap-3">
         <a *ngFor="let s of social"
-           [href]="s.href" target="_blank" rel="noopener noreferrer"
-           class="underline-offset-4 hover:underline"
-           style="color:hsl(var(--s));">
+          [href]="s.href" target="_blank" rel="noopener noreferrer"
+          class="underline-offset-4 hover:underline
+                  text-base-content/90 hover:text-base-content font-medium">
           {{ s.label }}
         </a>
       </div>
-
-      <!-- accent ayraç -->
-      <div class="mt-6 h-px w-full"
-           style="background-image:linear-gradient(90deg,hsl(var(--a)/0),hsl(var(--a)/.35),hsl(var(--a)/0));">
-      </div>
     </div>
   </div>
+
+  <!-- Bölüm ile footer arasında nefes payı -->
+  <div class="h-6 md:h-8"></div>
 </section>

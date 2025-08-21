@@ -12,7 +12,7 @@ export interface ContactPayload {
 @Injectable({ providedIn: 'root' })
 export class ContactService {
   private http = inject(HttpClient);
-  private api = `${environment.apiBaseUrl}/api/contact`;
+  private api = `${environment.apiBaseUrl}/contact`;
 
   send(payload: ContactPayload) {
     return this.http.post<{ ok: boolean }>(this.api, payload);

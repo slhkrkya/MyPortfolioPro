@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  apiBaseUrl: 'http://localhost:5291' // DEV backend URL
+  production: false,            // prod dosyada true, dev dosyada false
+  apiBaseUrl: '/api'           // <<< ÖNEMLİ: localhost yerine relative /api
 };

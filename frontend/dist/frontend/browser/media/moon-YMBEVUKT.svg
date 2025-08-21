@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <defs>
+    <radialGradient id="moonLight" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#E6F0FF"/>
+      <stop offset="50%" stop-color="#C8D6FF"/>
+      <stop offset="100%" stop-color="#9FB3FF"/>
+    </radialGradient>
+    <mask id="crescentMask">
+      <!-- büyük daire beyaz = görünür -->
+      <rect width="160" height="160" fill="white"/>
+      <!-- küçük daire siyah = gizle -->
+      <circle cx="110" cy="60" r="42" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Ay: degrade + maske -->
+  <circle cx="90" cy="70" r="42" fill="url(#moonLight)" mask="url(#crescentMask)"/>
+</svg>

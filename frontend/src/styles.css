@@ -7,14 +7,11 @@
 @tailwind utilities;
 
 /* === 3) Global reset & motion === */
-html, body { height: 100%; }
-* {
-  transition: color .25s ease, background-color .25s ease, border-color .25s ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
-}
-/* === Number input ok tuşlarını kaldır === */
+html, body { height: 100%; background: transparent; }
+* { transition: color .25s ease, background-color .25s ease, border-color .25s ease; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Number input ok tuşlarını kaldır */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
@@ -23,221 +20,429 @@ input[type=number] { -moz-appearance: textfield; }
 input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
-  /* arka planı temanın bg rengine boya */
-  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset !important;
-  -webkit-text-fill-color: hsl(var(--bc)) !important;
-  caret-color: hsl(var(--bc)) !important;
-  /* mavi animasyonu bastır */
-  transition: background-color 9999s ease-out 0s, color 9999s ease-out 0s;
-}
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill:focus {
-  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset !important;
-}
-input:-moz-autofill,
-textarea:-moz-autofill,
-select:-moz-autofill {
-  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset !important;
-  -moz-text-fill-color: hsl(var(--bc)) !important;
-  caret-color: hsl(var(--bc)) !important;
+  box-shadow: 0 0 0 1000px hsl(var(--b1)) inset;
+  -webkit-text-fill-color: hsl(var(--bc));
+  caret-color: hsl(var(--bc));
 }
 
 /* === 4) Doku & Scrollbar (tema uyumlu) === */
-.bg-noise{
-  background-image: radial-gradient(hsl(var(--bc) / 0.12) 1px, transparent 1px);
-  background-size: 16px 16px;
-}
+.bg-noise{ background-image: radial-gradient(hsl(var(--bc) / 0.12) 1px, transparent 1px); background-size: 16px 16px; }
 html[data-theme='portfolio-dark'] .bg-noise { opacity: .10; }
 
-/* 4.a – Global page scrollbar (sağdaki): html/body + app-shell + main */
-html, body, .app-shell, main{
-  /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--bc) / .28) transparent;
-}
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.app-shell::-webkit-scrollbar,
-main::-webkit-scrollbar{
-  width: 10px;
-  height: 10px;
-}
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track,
-.app-shell::-webkit-scrollbar-track,
-main::-webkit-scrollbar-track{ background: transparent; }
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
-.app-shell::-webkit-scrollbar-thumb,
-main::-webkit-scrollbar-thumb{
-  background: hsl(var(--bc) / .28);
-  border-radius: 9999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  transition: background-color .2s ease, box-shadow .2s ease;
-}
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
-.app-shell::-webkit-scrollbar-thumb:hover,
-main::-webkit-scrollbar-thumb:hover{ background: hsl(var(--bc) / .4); }
-html::-webkit-scrollbar-thumb:active,
-body::-webkit-scrollbar-thumb:active,
-.app-shell::-webkit-scrollbar-thumb:active,
-main::-webkit-scrollbar-thumb:active{
-  background: linear-gradient(90deg, hsl(var(--p) / .7), hsl(var(--s) / .7));
-}
-/* yatay taşmaları bastır (iç carouseller etkilenmez) */
-body{ overflow-x: clip; }
-
-/* 4.b – İç yatay track’ler için */
-.doc-track{
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--bc) / .28) transparent;
-  overflow-y: hidden !important;   /* WebKit */
-}
-.doc-track::-webkit-scrollbar{ height:8px; width:8px; }
-.doc-track::-webkit-scrollbar-track{ background: transparent; }
-.doc-track::-webkit-scrollbar-thumb{
-  background: hsl(var(--bc) / .28);
-  border-radius: 9999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  transition: background-color .2s ease, box-shadow .2s ease;
-}
-.doc-track:hover::-webkit-scrollbar-thumb{
-  background: hsl(var(--bc) / .38);
-  box-shadow: 0 0 0 1px hsl(var(--b3) / .25) inset;
-}
-.doc-track:active::-webkit-scrollbar-thumb{
-  background: linear-gradient(90deg, hsl(var(--p) / .7), hsl(var(--s) / .7));
-}
+html, body, .app-shell, main{ scrollbar-width: thin; scrollbar-color: hsl(var(--bc) / .28) transparent; }
 
 /* === 5) App shell === */
-.app-shell { background-color: hsl(var(--b1)); }
+.app-shell { background: transparent; }
 html[data-theme='portfolio-dark'] .app-blobs > div { opacity: .18; }
 
-/* Cam efekt (varsa .glass kullananlar) */
-html[data-theme='portfolio-dark'] .glass {
-  background: rgba(255,255,255,0.06) !important;
-  border-color: rgba(255,255,255,0.12) !important;
-  backdrop-filter: blur(6px);
+/* Cam efekt */
+html[data-theme='portfolio-dark'] .glass { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); backdrop-filter: blur(6px); }
+
+/* === 6) Tema-özel değişkenler === */
+:root[data-theme="portfolio-light"] {
+  --sky-top-light: 205 100% 92%;  /* #D8EEFF */
+  --sky-bot-light: 200 98% 78%;   /* #8ED4FF */
+  --sun-color:     45  97% 58%;   /* #FFCC33 */
+  --cloud-color:    0   0% 100%;  /* #FFFFFF */
+  --grass-light:  128  60% 38%;   /* #2FAE45 */
+}
+:root[data-theme="portfolio-dark"] {
+  --sky-top-dark: 222 70% 14%;    /* #111B33 */
+  --sky-bot-dark: 222 60%  8%;    /* #0A1122 */
+  --moon-color:    55 70% 90%;    /* daha parlak ay */
+  --star-color:    60 100% 96%;   /* #FFFFE6 */
+  --grass-dark:   140 25% 18%;    /* #0F2B16 */
 }
 
-/* === 6) DaisyUI değişkenleri (override) === */
-/* LIGHT */
-:root[data-theme="portfolio-light"]{
-  --p: 244 83% 64%;  --pc: 0 0% 100%;
-  --s: 189 89% 49%;  --sc: 0 0% 100%;
-  --a: 20 90% 57%;   --ac: 0 0% 100%;
-  --b1: 0 0% 100%;   --b2: 210 20% 98%;  --b3: 220 13% 91%;  --bc: 222 47% 11%;
-  --in: 221 83% 53%; --su: 142 71% 45%;  --wa: 38 92% 50%;  --er: 0 72% 51%;
-  --rounded-box: 1rem; --rounded-btn: .75rem; --tab-radius: .6rem;
-}
-/* DARK */
-:root[data-theme="portfolio-dark"]{
-  --p: 231 94% 75%;  --pc: 230 20% 20%;
-  --s: 189 86% 56%;  --sc: 230 20% 20%;
-  --a: 24 96% 64%;   --ac: 230 20% 20%;
-  --b1: 222 31% 8%;  --b2: 222 47% 11%;  --b3: 213 35% 21%; --bc: 220 13% 91%;
-  --in: 217 91% 60%; --su: 142 72% 45%;  --wa: 43 96% 56%; --er: 0 83% 67%;
-  --rounded-box: 1rem; --rounded-btn: .75rem; --tab-radius: .6rem;
+/* === 6.5) DaisyUI alias fallback (yalnızca portfolio-* için) === */
+@layer base {
+  [data-theme="portfolio-light"] {
+    --primary: 247 100% 67%; --primary-content: 0 0% 100%;
+    --secondary: 195 100% 50%; --secondary-content: 195 85% 12%;
+    --accent: 24 100% 62%; --accent-content: 215 28% 24%;
+    --neutral: 222 47% 11%; --neutral-content: 220 60% 96%;
+    --base-100: 0 0% 100%; --base-200: 220 60% 97%; --base-300: 226 40% 90%; --base-content: 222 47% 11%;
+    --info: 217 91% 60%; --success: 142 71% 45%; --warning: 38 92% 50%; --error: 0 72% 51%;
+    /* Aliases */
+    --p: var(--primary);  --pc: var(--primary-content);
+    --s: var(--secondary);--sc: var(--secondary-content);
+    --a: var(--accent);   --ac: var(--accent-content);
+    --n: var(--neutral);  --nc: var(--neutral-content);
+    --b1: var(--base-100);--b2: var(--base-200);--b3: var(--base-300);--bc: var(--base-content);
+    --in: var(--info);    --su: var(--success); --wa: var(--warning); --er: var(--error);
+  }
+  [data-theme="portfolio-dark"] {
+    --primary: 248 100% 80%; --primary-content: 246 30% 20%;
+    --secondary: 192 100% 70%; --secondary-content: 196 80% 10%;
+    --accent: 24 100% 74%; --accent-content: 215 28% 24%;
+    --neutral: 220 14% 90%; --neutral-content: 222 60% 9%;
+    --base-100: 222 60% 9%; --base-200: 222 47% 13%; --base-300: 214 28% 17%; --base-content: 220 100% 95%;
+    --info: 217 96% 76%; --success: 152 60% 50%; --warning: 43 96% 56%; --error: 0 88% 70%;
+    --p: var(--primary);  --pc: var(--primary-content);
+    --s: var(--secondary);--sc: var(--secondary-content);
+    --a: var(--accent);   --ac: var(--accent-content);
+    --n: var(--neutral);  --nc: var(--neutral-content);
+    --b1: var(--base-100);--b2: var(--base-200);--b3: var(--base-300);--bc: var(--base-content);
+    --in: var(--info);    --su: var(--success); --wa: var(--warning); --er: var(--error);
+  }
 }
 
 /* === 7) Arkaplan & metin === */
-body{
-  background:
-    radial-gradient(1200px 600px at 20% -10%, hsl(var(--p) / 0.06), transparent 70%),
-    radial-gradient(1200px 600px at 80% -20%, hsl(var(--s) / 0.06), transparent 70%),
-    linear-gradient(180deg, hsl(var(--b1)) 0%, hsl(var(--b2)) 100%);
-  color: hsl(var(--bc));
-}
+body{ color: hsl(var(--bc)); }
 a { color: hsl(var(--p)); }
 a:hover { filter: brightness(1.08); }
 
-/* === 8) Focus erişilebilirliği === */
-:focus-visible {
-  outline: 3px solid hsl(var(--p) / .35);
-  outline-offset: 2px;
+/* === 8) Focus === */
+:focus-visible { outline: 3px solid hsl(var(--p) / .35); outline-offset: 2px; }
+
+/* === 9) Tema geçiş animasyonu === */
+/* === FIX B: Global opacity animasyonunu devre dışı bırak === */
+html.theme-switching{
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
 }
 
-/* === 9) Tema geçiş animasyonu (FOUC azaltma) === */
-html.theme-switching {
-  opacity: .96;
-  transform: scale(.998);
-  transition: opacity .25s ease, transform .25s ease;
+/* === 9.x) SCENE: genel yumuşak geçişler (sahneye özel) === */
+:root{
+  --scene-trans-dur: 1200ms;
+  --scene-trans-ease: ease-in-out;
 }
-@media (prefers-reduced-motion: reduce) {
-  html.theme-switching { transform: none; }
+
+/* Sadece sahne katmanları: diğer UI geçişlerini EZMEZ */
+.background-scene::before,
+.background-scene::after,
+.background-scene .sun-moon,
+.background-scene .clouds-stars,
+.background-scene .bushes{
+  transition:
+    /* global geçişlerin devamı için */
+    color .25s ease,
+    background-color .25s ease,
+    border-color .25s ease,
+    /* sahneye özel yumuşaklıklar */
+    background var(--scene-trans-dur) var(--scene-trans-ease),
+    background-image var(--scene-trans-dur) var(--scene-trans-ease),
+    opacity var(--scene-trans-dur) var(--scene-trans-ease),
+    filter var(--scene-trans-dur) var(--scene-trans-ease),
+    transform var(--scene-trans-dur) var(--scene-trans-ease);
 }
+
+/* Güneş → Ay parlaklık hissi */
+[data-theme="portfolio-light"] .sun-moon{ opacity: 1; filter: brightness(1); }
+[data-theme="portfolio-dark"]  .sun-moon{ opacity: 1; filter: brightness(1.08) contrast(1.03); }
+
+/* Bulut → Yıldız opaklık akışı (light'ta bulutlar görünür kalsın) */
+[data-theme="portfolio-light"] .clouds-stars{ opacity: .92; filter: saturate(1); }
+[data-theme="portfolio-dark"]  .clouds-stars{ /* opacity, aşağıdaki yıldız bloğundan da yönetilecek */ filter: brightness(1.05) saturate(1.04); }
+
+/* Çalıların ton geçişini yumuşat */
+.background-scene .bushes{ filter: saturate(1) brightness(1); }
+[data-theme="portfolio-dark"] .bushes{ filter: saturate(.95) brightness(.92); }
 
 /* === 10) Component stilleri === */
 @layer components {
+  /* Cam yüzey – sabit kaldı */
   .glass-surface{
     background-color: hsl(var(--b1) / 0.7);
-    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--b3));
-    border-radius: var(--rounded-box, .75rem);
+    border-radius: .75rem;
     box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 10px 30px -15px rgba(0,0,0,.25);
   }
+  /* === Gradient başlık stili === */
+  .heading-gradient {
+    background-image: linear-gradient(90deg, hsl(var(--p)), hsl(var(--s)), hsl(var(--a)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
+  /* === YENİ: soft-card’ı her iki temada da yarı saydam yap === */
   .soft-card{
-    background-color: hsl(var(--b1));
-    border: 1px solid hsl(var(--b3));
-    border-radius: var(--rounded-box, .75rem);
+    background-color: hsl(var(--b1) / 0.62);
+    border: 1px solid hsl(var(--b3) / 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: .75rem;
     box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 10px 30px -15px rgba(0,0,0,.25);
     transition: transform .15s ease, box-shadow .15s ease;
   }
-  .soft-card:hover{ transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,.15); }
+  /* Dark’ta biraz daha şeffaf + daha yumuşak kenar */
+  [data-theme="portfolio-dark"] .soft-card{
+    background-color: hsl(var(--b1) / 0.38);
+    border-color: hsl(var(--b3) / 0.55);
+  }
+  .soft-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  }
 
-  .surface-1 { background-color: hsl(var(--b1)); border: 1px solid hsl(var(--b3)); }
-  .surface-2 { background-color: hsl(var(--b2)); border: 1px solid hsl(var(--b3)); }
-  .surface-3 { background-color: hsl(var(--b1) / .85); border: 1px solid hsl(var(--b3)); }
+  /* === YENİ: surface-* katmanları da yarı saydam olsun (genel kullanım) === */
+  .surface-1 { background-color: hsl(var(--b1) / 0.66); border: 1px solid hsl(var(--b3) / 0.85); }
+  .surface-2 { background-color: hsl(var(--b2) / 0.58); border: 1px solid hsl(var(--b3) / 0.80); }
+  .surface-3 { background-color: hsl(var(--b1) / 0.44); border: 1px solid hsl(var(--b3) / 0.75); }
+
+  /* Dark temada bu yüzeyleri biraz daha şeffaflaştır */
+  [data-theme="portfolio-dark"] .surface-1 { background-color: hsl(var(--b1) / 0.42); border-color: hsl(var(--b3) / 0.55); }
+  [data-theme="portfolio-dark"] .surface-2 { background-color: hsl(var(--b2) / 0.40); border-color: hsl(var(--b3) / 0.50); }
+  [data-theme="portfolio-dark"] .surface-3 { background-color: hsl(var(--b1) / 0.32); border-color: hsl(var(--b3) / 0.50); }
 
   .muted-text { color: hsl(var(--bc) / .7); }
-  .subtle-divider { border-top: 1px solid hsl(var(--b3)); }
 
-  .navbar-glass{
-    background-color: hsl(var(--b1) / .75);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid hsl(var(--b3));
+  .btn-primary-solid{ background-image: linear-gradient(90deg,hsl(var(--p)),hsl(var(--s))); color: hsl(var(--pc)); border:0; box-shadow:0 8px 22px -10px rgba(79,70,229,.45); }
+  .btn-primary-solid:hover{ filter: brightness(1.06); }
+  .btn-secondary-solid{ background-image: linear-gradient(90deg,hsl(var(--s)),hsl(var(--a))); color:hsl(var(--sc)); border:0; }
+  .btn-accent-solid{ background-image: linear-gradient(90deg,hsl(var(--a)),hsl(var(--p))); color:hsl(var(--ac)); border:0; }
+  .btn-danger-solid{ background-image: linear-gradient(90deg,hsl(var(--er)),hsl(var(--wa))); color:#fff; border:0; }
+
+  /* Backdrop desteklemeyen tarayıcılar için daha opak fallback */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .soft-card       { background-color: hsl(var(--b1) / 0.86); }
+    .surface-1       { background-color: hsl(var(--b1) / 0.82); }
+    .surface-2       { background-color: hsl(var(--b2) / 0.78); }
+    .surface-3       { background-color: hsl(var(--b1) / 0.70); }
+    [data-theme="portfolio-dark"] .soft-card { background-color: hsl(var(--b1) / 0.60); }
   }
-
-  .panel{
-    background-color: hsl(var(--b1));
-    border: 1px solid hsl(var(--b3));
-    border-radius: var(--rounded-box, .75rem);
-    box-shadow: 0 1px 1px rgba(0,0,0,.05), 0 12px 32px -18px rgba(0,0,0,.35);
+  /* comic outline*/
+  .comic-outline {
+    border: 2px solid hsl(var(--b3) / 0.9);
+    box-shadow: 2px 2px 0 hsl(var(--b3) / 0.8);
   }
-
-  .input-soft{
-    height: 2.75rem; width: 100%;
-    border-radius: var(--rounded-btn, .75rem);
-    background-color: hsl(var(--b2));
-    border: 1px solid hsl(var(--b3));
-    color: hsl(var(--bc));
-    padding: 0 .875rem;
-    transition: box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
+  [data-theme="portfolio-dark"] .comic-outline {
+    border-color: hsl(var(--b3) / 0.6);
+    box-shadow: 2px 2px 0 hsl(var(--b3) / 0.5);
   }
-  .input-soft::placeholder{ color: hsl(var(--bc) / .45); }
-  .input-soft:focus{
-    outline: none;
-    border-color: hsl(var(--p) / .6);
-    box-shadow: 0 0 0 3px hsl(var(--p) / .25);
-    background-color: hsl(var(--b1));
-  }
+}
 
-  .label-soft { color: hsl(var(--bc) / .8); }
-  .muted { color: hsl(var(--bc) / .7); }
+/* === FORM INPUT FIX === */
+input, textarea, select {
+  @apply w-full; /* Tailwind ile genişliği %100 yap */
+  background-color: hsl(var(--b1)) !important;
+  color: hsl(var(--bc)) !important;
+  border: 1px solid hsl(var(--b3));
+  border-radius: .5rem;
+  padding: 0.5rem 0.75rem;
+}
 
-  .btn-primary-solid { box-shadow: 0 8px 22px -10px rgba(79,70,229,.45); }
-  .btn-primary-solid:hover { filter: brightness(1.06); }
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--bc) / 0.6);
+}
 
-  .comic-outline { box-shadow: 0 0 0 2px hsl(var(--bc) / .10), 0 8px 0 0 hsl(var(--b3) / .25); }
+/* === 11) Background Scene (Light/Dark + Scroll reactive) === */
+:root {
+  --sky-shift: 0;
+  /* bulutların Y konumu için değişkenler */
+  --cloud1-y: -60px;
+  --cloud2-y: -20px;
+}
+.background-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 100% 100%;
+  filter: saturate(calc(1 - var(--sky-shift)*.15))
+          brightness(calc(1 - var(--sky-shift)*.05));
+}
 
-  .click-outside-backdrop { position: fixed; inset: 0; z-index: 50; }
+/* Güneş/Ay tek ve sol-üstte */
+.sun-moon, .clouds-stars { position: absolute; left: 0; right: 0; }
+.sun-moon {
+  top: 2vh;
+  width: 180px;
+  height: 180px;
+  background-repeat: no-repeat;
+  background-position: 2vw 1.6vh;
+}
 
-  .nav-link { transition: color .2s ease, background-color .2s ease; }
+/* Bulut/Yıldız katmanı: tüm yüksekliği kaplasın */
+.clouds-stars { top: 0; bottom: 0; height: auto; }
+/* Light: bulutlar sadece üst kısımda */
+[data-theme="portfolio-light"] .clouds-stars { top: 0; height: 40vh; bottom: auto; }
+/* Dark: yıldızlar tüm gökyüzüne yayılsın */
+[data-theme="portfolio-dark"] .clouds-stars { top: 0; bottom: 0; height: auto; }
+
+/* === LIGHT === */
+[data-theme="portfolio-light"] .sun-moon { background-image: url('assets/images/sun.svg'); background-size: 164px; }
+[data-theme="portfolio-light"] .clouds-stars {
+  background-image: url('assets/images/clouds.svg'), url('assets/images/clouds.svg');
+  background-repeat: repeat-x, repeat-x;
+  background-size: 700px 180px, 520px 140px;
+  background-position: 0 var(--cloud1-y), 260px var(--cloud2-y);
+  animation: clouds-sway 25s linear infinite both;
+  opacity: .9;
+  -webkit-mask-image: linear-gradient(to bottom,#000 70%,transparent 100%);
+          mask-image: linear-gradient(to bottom,#000 70%,transparent 100%);
+}
+[data-theme="portfolio-light"] .clouds-stars::before {
+  background-image: url('assets/images/clouds.svg');
+  background-size: 680px 180px;
+  background-position: 0 var(--cloud1-y);
+  opacity: .65;
+  animation: clouds-sway-slow 32s linear infinite both;
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+}
+[data-theme="portfolio-light"] .clouds-stars::after {
+  background-image: url('assets/images/clouds.svg');
+  background-size: 480px 140px;
+  background-position: 240px var(--cloud2-y);
+  opacity: .45;
+  animation: clouds-sway 22s linear infinite both;
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+}
+[data-theme="portfolio-light"] .bushes { background-image: url('assets/images/bushes-light.svg'); }
+
+/* === DARK === */
+[data-theme="portfolio-dark"] .sun-moon { background-image: url('assets/images/moon.svg'); background-size: 164px; }
+[data-theme="portfolio-dark"] .clouds-stars {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255,255,220,.95) 1px, transparent 2px),
+    radial-gradient(circle at 75% 25%, rgba(255,255,220,.85) 1px, transparent 2px),
+    url('assets/images/stars.svg');
+  background-repeat: repeat, repeat, repeat;
+  background-size: 160px 160px, 240px 240px, 700px 180px;
+  background-position: 0 0, 120px 40px, 0 0;
+  animation: twinkle 5s ease-in-out infinite alternate;
+  opacity: .9;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0) 100%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0) 100%);
+}
+[data-theme="portfolio-dark"] .clouds-stars::before,
+[data-theme="portfolio-dark"] .clouds-stars::after {
+  background-image: url('assets/images/stars.svg');
+  background-repeat: repeat;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0) 100%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.45) 70%, rgba(0,0,0,0) 100%);
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+}
+[data-theme="portfolio-dark"] .clouds-stars::before { background-size: 260px 160px; opacity: .85; animation: twinkle 5s ease-in-out infinite alternate; }
+[data-theme="portfolio-dark"] .clouds-stars::after  { background-size: 340px 200px; opacity: .55; animation: twinkle-slow 9s ease-in-out infinite alternate; }
+[data-theme="portfolio-dark"] .bushes { background-image: url('assets/images/bushes-dark.svg'); }
+
+.bushes { height: 140px; background-repeat: repeat-x; background-position: bottom; background-size: 800px 140px; }
+
+/* === Keyframes === */
+@keyframes clouds-sway { from { background-position: 0 var(--cloud2-y); } to { background-position: -520px var(--cloud2-y); } }
+@keyframes clouds-sway-slow { from { background-position: 0 var(--cloud1-y); } to { background-position: -700px var(--cloud1-y); } }
+@keyframes twinkle { 0% { filter: brightness(.85) saturate(1.00); } 50% { filter: brightness(1.05) saturate(1.05); } 100% { filter: brightness(1.15) saturate(1.10); } }
+@keyframes twinkle-slow { 0% { filter: brightness(.80) saturate(.95); } 50% { filter: brightness(1.03) saturate(1.02); } 100% { filter: brightness(1.10) saturate(1.08); } }
+
+/* === 12) SKY LAYERS — before: DAY, after: NIGHT (opacity crossfade) === */
+:root{ --sky-fade-dur: 2400ms; --sky-fade-ease: cubic-bezier(.22,.61,.36,1); }
+
+.background-scene::before,
+.background-scene::after{
+  content: ""; position: absolute; inset: 0; background-size: 100% 100%;
+  transition: opacity var(--sky-fade-dur) var(--sky-fade-ease);
+  will-change: opacity; pointer-events: none; z-index: -1;
+  /* Scroll'a bağlanacak tonlama (her iki katmana da uygula) */
+  filter: saturate(calc(1 - var(--sky-shift)*.15)) brightness(calc(1 - var(--sky-shift)*.05));
+}
+
+/* DAY gradient (before) */
+.background-scene::before{
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--sky-top-light)) 0%,
+    hsl(205 100% 86%) 45%,
+    hsl(var(--sky-bot-light)) 100%
+  );
+  opacity: 1; /* varsayılan: gündüz görünür */
+}
+/* NIGHT gradient (after) */
+.background-scene::after{
+  background:
+    radial-gradient(1600px 800px at 10% 5%, rgba(140,160,255,.10), transparent 60%),
+    linear-gradient(
+      to bottom,
+      hsl(var(--sky-top-dark)) 0%,
+      hsl(222 60% 10%) 50%,
+      hsl(var(--sky-bot-dark)) 100%
+    );
+  opacity: 0; /* varsayılan: gece saklı */
+}
+
+/* Tema ile görünürlükler */
+html[data-theme="portfolio-light"] .background-scene::before{ opacity: 1; }
+html[data-theme="portfolio-light"] .background-scene::after { opacity: 0; }
+html[data-theme="portfolio-dark"]  .background-scene::before{ opacity: 0; }
+html[data-theme="portfolio-dark"]  .background-scene::after { opacity: 1; }
+
+/* Hafif gecikmeler (her iki yöne de tatlı) */
+html[data-theme="portfolio-dark"]  .background-scene::after { transition-delay: 120ms; }
+html[data-theme="portfolio-light"] .background-scene::before{ transition-delay: 120ms; }
+
+/* === 12.6) STARS — tutarlı opaklık + hafif stagger (YALNIZCA gece) === */
+:root{ --stars-dur: 1100ms; --stars-ease: ease-in-out; --stars-delay-base: 0ms; --stars-delay-b: 120ms; --stars-delay-a: 240ms; }
+
+/* Hedef opaklık değişkenleri */
+[data-theme="portfolio-light"]{ --stars-base: 0; --stars-b: 0; --stars-a: 0; }
+[data-theme="portfolio-dark"] { --stars-base: .95; --stars-b: .85; --stars-a: .55; }
+
+/* Gece modunda yıldız katmanlarını yönet (light'ı etkileme ki bulutlar görünür kalsın) */
+html[data-theme="portfolio-dark"] .clouds-stars{
+  transition: opacity var(--stars-dur) var(--stars-ease), filter var(--stars-dur) var(--stars-ease);
+  transition-delay: var(--stars-delay-base);
+  opacity: var(--stars-base); will-change: opacity, filter;
+}
+html[data-theme="portfolio-dark"] .clouds-stars::before{
+  transition: opacity var(--stars-dur) var(--stars-ease), filter var(--stars-dur) var(--stars-ease);
+  transition-delay: var(--stars-delay-b);
+  opacity: var(--stars-b); will-change: opacity, filter;
+}
+html[data-theme="portfolio-dark"] .clouds-stars::after{
+  transition: opacity var(--stars-dur) var(--stars-ease), filter var(--stars-dur) var(--stars-ease);
+  transition-delay: var(--stars-delay-a);
+  opacity: var(--stars-a); will-change: opacity, filter;
+}
+/* === FIX A: Crossfade eşzamanlı olsun (delay yok) === */
+.background-scene::before,
+.background-scene::after{
+  transition: opacity 2200ms cubic-bezier(.22,.61,.36,1) !important;
+}
+/* === FIX: taban gökyüzü rengi – boşluk olmasın === */
+html[data-theme="portfolio-light"] .background-scene{
+  background-color: hsl(var(--sky-top-light));
+}
+html[data-theme="portfolio-dark"] .background-scene{
+  background-color: hsl(var(--sky-top-dark));
+}
+/* === Footer sosyal ikon renklerini light modda koyulaştır === */
+[data-theme="portfolio-light"] .footer-social i.pi-instagram { color: #c13584; } /* Instagram mor-pembe */
+[data-theme="portfolio-light"] .footer-social i.pi-linkedin  { color: #0a66c2; } /* LinkedIn mavi */
+[data-theme="portfolio-light"] .footer-social i.pi-github    { color: #181717; } /* GitHub koyu siyah */
+[data-theme="portfolio-light"] .footer-social i.pi-whatsapp  { color: #075e54; } /* WhatsApp koyu yeşil */
+/* 1A) Boot aşamasında sahne katmanlarını dondur */
+html.scene-boot .background-scene::before,
+html.scene-boot .background-scene::after,
+html.scene-boot .clouds-stars,
+html.scene-boot .clouds-stars::before,
+html.scene-boot .clouds-stars::after {
+  transition: none !important;
+  animation-play-state: paused !important; /* keyframe'ler duraklatılır */
+  opacity: 1 !important; /* anlık parlamaları engelle */
+}
+
+/* 1B) Hazır olduktan sonra (scene-ready) animasyonlar devam etsin */
+html.scene-ready .clouds-stars,
+html.scene-ready .clouds-stars::before,
+html.scene-ready .clouds-stars::after {
+  animation-play-state: running !important;
+}
+
+/* 1C) Kompozitör katmanına al (tearing ve jitter azalır) */
+.background-scene,
+.background-scene::before,
+.background-scene::after,
+.clouds-stars,
+.clouds-stars::before,
+.clouds-stars::after,
+.bushes {
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  transform: translateZ(0); /* GPU katmanına it */
 }

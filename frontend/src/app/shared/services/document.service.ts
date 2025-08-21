@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class DocumentService {
   private http = inject(HttpClient);
-  private api = `${environment.apiBaseUrl}/api/documents`; 
+  private api = `${environment.apiBaseUrl}/documents`; 
 
   getAll(): Observable<Document[]> {
     return this.http.get<Document[]>(this.api);

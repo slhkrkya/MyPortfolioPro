@@ -11,6 +11,8 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.HttpOverrides; // ← eklendi
+using Microsoft.OpenApi.Models;
+using API.Infrastructure.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +40,31 @@ builder.Services.AddAuthorization();
 // ===== Genel servisler =====
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "MyPortfolioPro API", Version = "v1" });
+    
+    // File upload desteği için
+    c.OperationFilter<FileUploadOperationFilter>();
+    
+    // JWT authentication için
+    c.AddSecurityDefinition("Bearer", new()
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    
+    c.AddSecurityRequirement(new()
+    {
+        {
+            new() { Reference = new() { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
+            Array.Empty<string>()
+        }
+    });
+});
 builder.Services.AddScoped<IGitHubImportService, GitHubImportService>();
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
@@ -111,7 +137,11 @@ if (app.Environment.IsDevelopment())
 // proxy başlıklarını oku → gerçek istemci IP’si
 app.UseForwardedHeaders();
 
-app.UseHttpsRedirection();
+// HTTPS redirect sadece production'da
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowAngularClient");
 

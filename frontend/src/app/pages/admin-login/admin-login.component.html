@@ -4,22 +4,13 @@
   <section class="soft-card comic-outline p-6 surface-2">
     <div class="flex items-center gap-2 -mt-1 mb-2">
       <span
-        class="px-2 py-0.5 rounded-md text-xs font-medium"
-        style="
-          background-color: hsl(var(--s) / .12);
-          color: hsl(var(--s));
-          border: 1px solid hsl(var(--s) / .35);
-        ">
+        class="text-3xl md:text-4xl font-extrabold tracking-tight heading-gradient">
         Admin
       </span>
     </div>
 
     <h2
-      class="text-3xl leading-tight font-extrabold tracking-tight"
-      style="
-        background-image: linear-gradient(90deg, hsl(var(--p)), hsl(var(--s)));
-        -webkit-background-clip: text; background-clip: text; color: transparent;
-      ">
+      class="text-3xl leading-tight font-extrabold tracking-tight text-brand-gradient">
       Admin Giriş
     </h2>
 
@@ -105,11 +96,7 @@
       <!-- Gönder butonu: primary→secondary gradyan -->
       <button
         class="btn w-full btn-primary-solid border-0"
-        [disabled]="loading" aria-label="Giriş Yap"
-        style="
-          background-image: linear-gradient(90deg, hsl(var(--p)), hsl(var(--s)));
-          color: hsl(var(--pc));
-        ">
+        [disabled]="loading" aria-label="Giriş Yap">
         <ng-container *ngIf="!loading">
           <i class="pi pi-sign-in mr-2"></i>
           Giriş Yap

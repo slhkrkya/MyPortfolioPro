@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private api = `${environment.apiBaseUrl}/api/auth`;
+  private api = `${environment.apiBaseUrl}/auth`;
 
   private redirectUrl: string | null = null;
 
