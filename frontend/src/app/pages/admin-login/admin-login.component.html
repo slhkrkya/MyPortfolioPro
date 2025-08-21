@@ -4,13 +4,14 @@
   <section class="soft-card comic-outline p-6 surface-2">
     <div class="flex items-center gap-2 -mt-1 mb-2">
       <span
-        class="text-3xl md:text-4xl font-extrabold tracking-tight heading-gradient">
+        class="px-2 py-0.5 rounded-md text-xs font-medium"
+        style="background-color:hsl(var(--s) / .14); color:hsl(var(--s)); border:1px solid hsl(var(--s) / .35);">
         Admin
       </span>
     </div>
 
     <h2
-      class="text-3xl leading-tight font-extrabold tracking-tight text-brand-gradient">
+      class="text-3xl md:text-4xl font-extrabold tracking-tight heading-gradient">
       Admin Giriş
     </h2>
 
@@ -82,16 +83,15 @@
 
       <!-- alt satır -->
       <div class="flex items-center justify-between pt-1">
-        <label class="label cursor-pointer gap-2">
-          <input type="checkbox" class="checkbox checkbox-sm" [(ngModel)]="remember" name="remember">
-          <span class="label-soft text-sm">Beni hatırla</span>
-        </label>
-
-        <a class="text-sm hover:underline underline-offset-4"
-           style="color: hsl(var(--s));">
-          Şifremi unuttum
-        </a>
-      </div>
+      <label class="label cursor-pointer flex items-center gap-2">
+        <input type="checkbox" class="checkbox checkbox-sm" [(ngModel)]="remember" name="remember">
+        <span class="label-soft text-sm whitespace-nowrap">Beni hatırla</span>
+      </label>
+      <a class="text-sm hover:underline underline-offset-4"
+        style="color: hsl(var(--s));">
+        Şifremi unuttum
+      </a>
+    </div>
 
       <!-- Gönder butonu: primary→secondary gradyan -->
       <button
